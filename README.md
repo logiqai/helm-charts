@@ -14,11 +14,9 @@ LOGIQ K8S components are made available as helm charts. Instructions below assum
 $ helm repo add logiq-repo https://logiqai.github.io/helm-charts
 ```
 
-{% hint style="info" %}
 The HELM repository will be named `logiq-repo`. For installing charts from this repository please make sure to use the repository name as the prefix e.g. 
 
 `helm install <deployment_name> logiq-repo/<chart_name>`
-{% endhint %}
 
 You can now run `helm search repo logiq-repo` to see the available helm charts
 
@@ -36,9 +34,8 @@ $ kubectl create namespace logiq
 
 This will create a namespace **`logiq`** where we will deploy the LOGIQ Log Insights stack. 
 
-{% hint style="info" %}
-If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps
-{% endhint %}
+
+**If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps.**
 
 ## 2. Install LOGIQ
 
@@ -49,15 +46,13 @@ $ helm install logiq --namespace logiq \
 
 This will install LOGIQ and expose the LOGIQ UI and ingress ports at the domain `logiq.my-domain.com.` Replace `logiq.my-domain.com` with you own domain where the service will be hosted.
 
-{% hint style="success" %}
 You should now be able to login to LOGIQ UI at your domain using `https://logiq.my-domain.com` that you set in the ingress after you have updated your DNS server to point to the Ingress controller service IP
 
-The default login and password to use is flash-admin@foo.com and flash-password. You can change these in the UI once logged in.
-{% endhint %}
+The default login and password to use is **_flash-admin@foo.com_ and _flash-password_.** You can change these in the UI once logged in.
 
-{% hint style="info" %}
+
+
 The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described in the [port details section](quickstart-guide.md#ports). 
-{% endhint %}
 
 ![](../.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png)
 
@@ -95,15 +90,13 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 S3 providers may have restrictions on bucket name for e.g. AWS S3 bucket names are globally unique. 
 {% endhint %}
 
-LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities. You can use the [logiqbox LOGIQ CLI](https://docs.logiq.ai/logiq-cli) for accessing the above features.
+LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities. You can use [logiqctl - LOGIQ command line toolkit](https://docs.logiq.ai/logiqctl) for accessing the above features.
 
 ### 3.2 - Install LOGIQ server certificates and Client CA `[OPTIONAL]`
 
 LOGIQ supports TLS for all ingest. We also enable non-TLS ports by default. It is however recommended that  non-TLS ports not be used unless running in a secure VPC or cluster. The certificates can be provided to the cluster using K8S secrets. Replace the template sections below with your Base64 encoded secret files.
 
-{% hint style="info" %}
 If you skip this step, LOGIQ server automatically generates a ca and a pair of client and server certificates for you to use. you can get them from the ingest server pods under the folder `/flash/certs`
-{% endhint %}
 
 ```yaml
 apiVersion: v1
