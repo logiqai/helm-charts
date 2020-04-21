@@ -3,7 +3,7 @@ entries:
   logiq:
   - apiVersion: v2
     appVersion: 1.2.0
-    created: "2020-04-20T15:52:53.278026-07:00"
+    created: "2020-04-20T18:26:24.250187-07:00"
     dependencies:
     - alias: postgres
       name: postgresql
@@ -18,11 +18,11 @@ entries:
       repository: https://kubernetes-charts.storage.googleapis.com
       version: 5.0.20
     description: A Helm chart for Kubernetes
-    digest: 30adc18890d167a50b963e5e609df27c246c872ff52148b604ac1c1b83a6a631
+    digest: 519d062905771867d034bb41d2030f30ea54a9030243ae3cfabc1b461d18500c
     icon: https://logiq.ai/wp-content/uploads/2019/11/cropped-clipboard-image.png
     name: logiq
     type: application
     urls:
     - logiq-1.0.0.tgz
     version: 1.0.0
-generated: "2020-04-20T15:52:53.266692-07:00"
+generated: "2020-04-20T18:26:24.238975-07:00"
