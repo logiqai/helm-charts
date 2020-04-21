@@ -70,11 +70,9 @@ Go to AWS IAM console and create an access key and secret key that can be used t
 
 Make sure to pass your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from [step 2.1.1](k8s-quickstart-guide.md#3-1-1) above and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API cost.
 
-{% hint style="info" %}
 You do not need to create the bucket, we will automatically provision it for you. Just provide the bucket name and access credentials in the the step below. 
 
 If the bucket already exists, LOGIQ will use it. Check to make sure the access and secret key work with it.
-{% endhint %}
 
 ```bash
 $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
@@ -86,9 +84,7 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 --set s3-gateway.environment.AWS_SECRET_ACCESS_KEY=<secret_key> logiq-repo/logiq
 ```
 
-{% hint style="info" %}
-S3 providers may have restrictions on bucket name for e.g. AWS S3 bucket names are globally unique. 
-{% endhint %}
+**S3 providers may have restrictions on bucket name for e.g. AWS S3 bucket names are globally unique.**
 
 LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities. You can use [logiqctl - LOGIQ command line toolkit](https://docs.logiq.ai/logiqctl) for accessing the above features.
 
