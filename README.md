@@ -128,7 +128,6 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 If and when you want to decommission the installation use following commands
 
 ```bash
-$ kubectl apply --namespace logiq -f logiq-certs.yaml
 $ helm delete logiq --namespace logiq
 $ helm repo remove logiq-repo
 $ kubectl delete namespace logiq
