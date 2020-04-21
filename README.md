@@ -52,7 +52,7 @@ The default login and password to use is **_flash-admin@foo.com_ and _flash-pass
 
 
 
-The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described in the [port details section](quickstart-guide.md#ports). 
+The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described in the [Port details section](https://docs.logiq.ai/logiq-server/quickstart-guide#ports). 
 
 ![](../.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png)
 
