@@ -1,8 +1,4 @@
----
-description: This page describes the K8S deployment for the LOGIQ using HELM 3 charts
----
-
-# K8S Quickstart guide
+# LOGIQ K8S Quickstart guide
 
 ## 1 - Prerequisites
 
