@@ -3,7 +3,7 @@ entries:
   logiq:
   - apiVersion: v2
     appVersion: 1.2.0
-    created: "2020-04-23T18:16:07.703442-07:00"
+    created: "2020-04-26T23:28:39.104515-07:00"
     dependencies:
     - alias: postgres
       name: postgresql
@@ -17,12 +17,20 @@ entries:
       name: minio
       repository: https://kubernetes-charts.storage.googleapis.com
       version: 5.0.20
-    description: LOGIQ Log Insights Helm chart for Kubernetes
-    digest: d2e459e44678c6138cf56254ee8d9a53c933f3bba9d90d51ba76efadc3275f02
+    description: LOGIQ Observability HELM chart for Kubernetes
+    digest: def886adbe5778a427b453db11b7b2a2289c4501197015bddc3b0fdb270ff28e
+    home: https://logiq.ai
     icon: https://logiq.ai/wp-content/uploads/2019/11/cropped-clipboard-image.png
+    maintainers:
+    - email: ranjan@logiq.ai
+      name: ranjan
+    - email: tito@logiq.ai
+      name: tito
+    - email: ohm@logiq.ai
+      name: ohm
     name: logiq
     type: application
     urls:
     - logiq-1.0.0.tgz
     version: 1.0.0
-generated: "2020-04-23T18:16:07.69334-07:00"
+generated: "2020-04-26T23:28:39.088663-07:00"
