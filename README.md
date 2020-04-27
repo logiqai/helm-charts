@@ -1,10 +1,15 @@
-# LOGIQ K8S Quickstart guide
+# LOGIQ Observability - K8S Quickstart guide
 
-## 1 - Prerequisites
+## 1 - Introduction
+LOGIQ is a monitoring and log analytics stack for infrastructure and application observability
+1. [LOGIQ Home](https://logiq.ai)
+2. [LOGIQ Documentation](https://docs.logiq.ai)
+
+## 2 - Prerequisites
 
 LOGIQ K8S components are made available as helm charts. Instructions below assume you are using HELM 3.
 
-### 1.1 Add LOGIQ helm repository
+### 2.1 Add LOGIQ helm repository
 
 ```bash
 $ helm repo add logiq-repo https://logiqai.github.io/helm-charts
@@ -22,7 +27,7 @@ NAME            	CHART VERSION	APP VERSION	DESCRIPTION
 logiq-repo/logiq	1.0.0        	1.2.0      	LOGIQ Log Insights Helm chart for Kubernetes
 ```
 
-### 1.2 Create namespace where LOGIQ will be deployed
+### 2.2 Create namespace where LOGIQ will be deployed
 
 ```bash
 $ kubectl create namespace logiq
@@ -33,7 +38,7 @@ This will create a namespace **`logiq`** where we will deploy the LOGIQ Log Insi
 
 **If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps.**
 
-## 2. Install LOGIQ
+## 3. Install LOGIQ
 
 ```bash
 $ helm install logiq --namespace logiq \
@@ -52,17 +57,17 @@ The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described i
 
 ![](../.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png)
 
-## 3 Customizing the deployment
+## 4 Customizing the deployment
 
-### 3.1 - Using an AWS S3 bucket
+### 4.1 - Using an AWS S3 bucket
 
 Depending on your requirements, you may want to host your storage in your own K8S cluster or create a bucket in a cloud provider like AWS.
 
-#### 3.1.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a>
+#### 4.1.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a>
 
 Go to AWS IAM console and create an access key and secret key that can be used to create your bucket and manage access to the bucket for writing and reading your log files
 
-#### 3.1.2 Deploy the LOGIQ helm in gateway mode
+#### 4.1.2 Deploy the LOGIQ helm in gateway mode
 
 Make sure to pass your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from [step 2.1.1](k8s-quickstart-guide.md#3-1-1) above and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API cost.
 
@@ -84,7 +89,7 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 
 LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities. You can use [logiqctl - LOGIQ command line toolkit](https://docs.logiq.ai/logiqctl) for accessing the above features.
 
-### 3.2 - Install LOGIQ server certificates and Client CA `[OPTIONAL]`
+### 4.2 - Install LOGIQ server certificates and Client CA `[OPTIONAL]`
 
 LOGIQ supports TLS for all ingest. We also enable non-TLS ports by default. It is however recommended that  non-TLS ports not be used unless running in a secure VPC or cluster. The certificates can be provided to the cluster using K8S secrets. Replace the template sections below with your Base64 encoded secret files.
 
@@ -115,7 +120,7 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 --set logiq-flash.secrets_name=logiq-certs logiq-repo/logiq
 ```
 
-## 4 Tear down
+## 5 Tear down
 
 If and when you want to decommission the installation use following commands
 
