@@ -26,7 +26,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME            	CHART VERSION	APP VERSION	DESCRIPTION
-logiq-repo/logiq	1.0.1        	1.2.1      	LOGIQ Log Insights Helm chart for Kubernetes
+logiq-repo/logiq	1.0.2        	1.2.1      	LOGIQ Log Insights Helm chart for Kubernetes
 ```
 
 ### 2.2 Create namespace where LOGIQ will be deployed
