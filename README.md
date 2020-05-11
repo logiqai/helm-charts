@@ -142,7 +142,7 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 --set logiq-flash.secrets_name=logiq-certs logiq-repo/logiq
 ```
 
-#### 4.4 Email Configuration Setup
+### 4.4 Email Configuration Setup
 
 LOGIQ insights can be configured to send emails to notify alerts. It uses smtp mail and requires following information for configuration:
 
@@ -164,7 +164,7 @@ $ helm upgrade --namespace logiq \
      logiq logiq-repo/logiq
 ```
 
-#### 4.5 Updating the storage class
+### 4.5 Updating the storage class
 
 If you are planning on using a specific storage class for your volumes, you can customize it for the LOGIQ deployment. By default LOGIQ uses the `standard` storage class
 
