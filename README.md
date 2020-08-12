@@ -49,7 +49,7 @@ $ helm install logiq --namespace logiq \
 
 This will install LOGIQ and expose the LOGIQ services and UI on the ingress IP. Please refer Section 3.5 for details about storage class. Service ports are described in the [Port details section](https://docs.logiq.ai/logiq-server/quickstart-guide#ports). You should now be able to go to `http://ingress-ip/`
 
-The default login and password to use is `flash-admin@foo.com` and `flash-password`. You can change these in the UI once logged in. Helm chart can override the default admin settings as well. See section[ 3.7](k8s-quickstart-guide.md#3-7-customize-admin-account) on customizing the admin settings
+The default login and password to use is `flash-admin@foo.com` and `flash-password`. You can change these in the UI once logged in. Helm chart can override the default admin settings as well. See section[ 4.7] on customizing the admin settings
 
 LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities.  
 Besides the web based UI, LOGIQ also offers [logiqctl, LOGIQ CLI](https://docs.logiq.ai/logiq-cli) for accessing the above features.
@@ -70,7 +70,7 @@ You should now be able to login to LOGIQ UI at your domain using `https://logiq.
 
 The default login and password to use is `flash-admin@foo.com` and `flash-password`. You can change these in the UI once logged in.
 
-The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described in the [port details section](quickstart-guide.md#ports).
+The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described in the [port details section](https://docs.logiq.ai/logiq-server/quickstart-guide#ports).
 
 #### 4.1.1 Passing an ingress secret
 
@@ -91,13 +91,13 @@ Depending on your requirements, you may want to host your storage in your own K8
 
 Please note that cloud providers may charge data transfer costs between regions. It is important that the LOGIQ cluster be deployed in the same region where the S3 bucket is hosted
 
-#### 4.2.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a>
+#### 4.2.1 Create an access/secret key pair for creating and managing your bucket <a id="4-1-1"></a>
 
 Go to AWS IAM console and create an access key and secret key that can be used to create your bucket and manage access to the bucket for writing and reading your log files
 
 #### 4.2.2 Deploy the LOGIQ helm in gateway mode
 
-Make sure to pass your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from [step 3.1.1](k8s-quickstart-guide.md#3-1-1) above and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API cost.
+Make sure to pass your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from [step 4.1.1] above and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API cost.
 
 You do not need to create the bucket, we will automatically provision it for you. Just provide the bucket name and access credentials in the the step below.
 
