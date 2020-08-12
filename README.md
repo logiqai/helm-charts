@@ -18,11 +18,9 @@ LOGIQ K8S components are made available as helm charts. Instructions below assum
 $ helm repo add logiq-repo https://logiqai.github.io/helm-charts
 ```
 
-{% hint style="info" %}
 The HELM repository will be named `logiq-repo`. For installing charts from this repository please make sure to use the repository name as the prefix e.g.
 
 `helm install <deployment_name> logiq-repo/<chart_name>`
-{% endhint %}
 
 You can now run `helm search repo logiq-repo` to see the available helm charts
 
@@ -40,9 +38,7 @@ $ kubectl create namespace logiq
 
 This will create a namespace **`logiq`** where we will deploy the LOGIQ Log Insights stack.
 
-{% hint style="info" %}
 If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps
-{% endhint %}
 
 ## 3. Install LOGIQ
 
@@ -53,11 +49,7 @@ $ helm install logiq --namespace logiq \
 
 This will install LOGIQ and expose the LOGIQ services and UI on the ingress IP. Please refer Section 3.5 for details about storage class. Service ports are described in the [Port details section](https://docs.logiq.ai/logiq-server/quickstart-guide#ports). You should now be able to go to `http://ingress-ip/`
 
-{% hint style="info" %}
 The default login and password to use is `flash-admin@foo.com` and `flash-password`. You can change these in the UI once logged in. Helm chart can override the default admin settings as well. See section[ 3.7](k8s-quickstart-guide.md#3-7-customize-admin-account) on customizing the admin settings
-{% endhint %}
-
-![Logiq Insights Login UI ](../.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png)
 
 LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities.  
 Besides the web based UI, LOGIQ also offers [logiqctl, LOGIQ CLI](https://docs.logiq.ai/logiq-cli) for accessing the above features.
@@ -74,15 +66,11 @@ $ helm install logiq --namespace logiq \
 --set global.persistence.storageClass=<storage class name> logiq-repo/logiq
 ```
 
-{% hint style="success" %}
 You should now be able to login to LOGIQ UI at your domain using `https://logiq.my-domain.com` that you set in the ingress after you have updated your DNS server to point to the Ingress controller service IP
 
 The default login and password to use is `flash-admin@foo.com` and `flash-password`. You can change these in the UI once logged in.
-{% endhint %}
 
-{% hint style="info" %}
 The `logiq.my-domain.com` also fronts all the LOGIQ service ports as described in the [port details section](quickstart-guide.md#ports).
-{% endhint %}
 
 #### 4.1.1 Passing an ingress secret
 
@@ -101,9 +89,7 @@ $ helm install logiq --namespace logiq \
 
 Depending on your requirements, you may want to host your storage in your own K8S cluster or create a bucket in a cloud provider like AWS.
 
-{% hint style="danger" %}
 Please note that cloud providers may charge data transfer costs between regions. It is important that the LOGIQ cluster be deployed in the same region where the S3 bucket is hosted
-{% endhint %}
 
 #### 4.2.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a>
 
@@ -113,11 +99,9 @@ Go to AWS IAM console and create an access key and secret key that can be used t
 
 Make sure to pass your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from [step 3.1.1](k8s-quickstart-guide.md#3-1-1) above and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API cost.
 
-{% hint style="info" %}
 You do not need to create the bucket, we will automatically provision it for you. Just provide the bucket name and access credentials in the the step below.
 
 If the bucket already exists, LOGIQ will use it. Check to make sure the access and secret key work with it. Additionally provide a valid amazon service endpoint for s3 else the config defaults to [https://s3.us-east-1.amazonaws.com](https://s3.us-east-1.amazonaws.com)
-{% endhint %}
 
 ```bash
 $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
@@ -128,17 +112,13 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 --set global.persistence.storageClass=<storage class name> logiq-repo/logiq
 ```
 
-{% hint style="info" %}
 S3 providers may have restrictions on bucket name for e.g. AWS S3 bucket names are globally unique.
-{% endhint %}
 
 ### 4.3 Install LOGIQ server certificates and Client CA `[OPTIONAL]`
 
 LOGIQ supports TLS for all ingest. We also enable non-TLS ports by default. It is however recommended that non-TLS ports not be used unless running in a secure VPC or cluster. The certificates can be provided to the cluster using K8S secrets. Replace the template sections below with your Base64 encoded secret files.
 
-{% hint style="info" %}
 If you skip this step, LOGIQ server automatically generates a ca and a pair of client and server certificates for you to use. you can get them from the ingest server pods under the folder `/flash/certs`
-{% endhint %}
 
 ```yaml
 apiVersion: v1
@@ -166,9 +146,7 @@ $ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 
 If you are planning on using a specific storage class for your volumes, you can customize it for the LOGIQ deployment. By default, LOGIQ uses the `standard` storage class
 
-{% hint style="info" %}
 It is quite possible that your environment may use a different storage class name for the provisioner. In that case please use the appropriate storage class name. E.g. if a user creates a storage class `ebs-volume` for the EBS provisioner for their cluster, you can use `ebs-volume` instead of `gp2` as suggested below
-{% endhint %}
 
 | Cloud Provider | K8S StorageClassName | Default Provisioner |
 | :--- | :--- | :--- |
@@ -199,9 +177,7 @@ logiq logiq-repo/logiq
 
 ### 4.6 Upload LOGIQ professional license
 
-The deployment described above offers 30 days trial license. Email to license@logiq.ai to obtain the professional license. After obtaining the license, use the logiqctl tool to apply the license to the deployment. Please refer logiqctl details at [https://logiqctl.logiq.ai/](https://logiqctl.logiq.ai/). You will need api-token from LOGIQ ui as shown below
-
-![Logiq Insights Login Api-token ](../.gitbook/assets/Screen-Shot-2020-08-09-ALERT.png)
+The deployment described above offers 30 days trial license. Email to license@logiq.ai to obtain the professional license. After obtaining the license, use the logiqctl tool to apply the license to the deployment. Please refer logiqctl details at [https://logiqctl.logiq.ai/](https://logiqctl.logiq.ai/). You will need api-token from LOGIQ ui once logged in.
 
 ```bash
 Setup your LOGIQ Cluster endpoint
