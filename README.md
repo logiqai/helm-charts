@@ -212,6 +212,8 @@ $ helm install logiq --namespace logiq \
 | `global.environment.postgres_password` | Postgres admin user password | postgres |
 | `global.environment.postgres_port` | Host Port for external Postgres | 5432 |
 
+While configuring RDS, create a new parameter group that sets autoVaccum to true or the value "1", associate this parameter group to your RDS instance. Autovacuum is a daemon that automates the execution of VACUUM and ANALYZE (to gather statistics) commands. Autovacuum checks for bloated tables in the database and reclaims the space for reuse.
+
 ### 3.6 Upload LOGIQ professional license
 
 The deployment described above offers 30 days trial license. Email `license@logiq.ai` to obtain a professional license. After obtaining the license, use the logiqctl tool to apply the license to the deployment. Please refer `logiqctl` details at [https://logiqctl.logiq.ai/](https://logiqctl.logiq.ai/). You will need API-token from LOGIQ UI as shown below
