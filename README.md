@@ -43,7 +43,7 @@ This will create a namespace **`logiq`** where we will deploy the LOGIQ Log Insi
 
 Sample YAML files for small, medium, large configs can be downloaded at the links below
 
-![LOGIQ Sample Values.yaml files](https://docs.logiq.ai/logiq-server/k8s-quickstart-guide#1-3-prepare-your-values-yaml-file)
+[LOGIQ Sample Values.yaml files](https://docs.logiq.ai/logiq-server/k8s-quickstart-guide#1-3-prepare-your-values-yaml-file)
 
 These YAML files can be used for deployment with -f parameter as shown below in the description.
 
