@@ -25,7 +25,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME                CHART VERSION    APP VERSION    DESCRIPTION
-logiq-repo/logiq    2.0.0            2.0.0          A Helm chart for Kubernetes
+logiq-repo/logiq    2.0.1            2.0.1          A Helm chart for Kubernetes
 ```
 
 ### 1.2 Create namespace where LOGIQ will be deployed
@@ -38,6 +38,19 @@ This will create a namespace **`logiq`** where we will deploy the LOGIQ Log Insi
 
 > If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps
 >
+
+### 1.3 Prepare your Values YAML file
+
+Sample YAML files for small, medium, large configs can be downloaded at the links below
+
+![LOGIQ Sample Values.yaml files](https://docs.logiq.ai/logiq-server/k8s-quickstart-guide#1-3-prepare-your-values-yaml-file)
+
+These YAML files can be used for deployment with -f parameter as shown below in the description.
+
+```bash
+$ helm install logiq --namespace logiq \
+--set global.persistence.storageClass=<storage class name> logiq-repo/logiq -f Values.small.yaml
+```
 
 ## 2. Install LOGIQ
 
@@ -212,7 +225,7 @@ $ helm install logiq --namespace logiq \
 | `global.environment.postgres_password` | Postgres admin user password | postgres |
 | `global.environment.postgres_port` | Host Port for external Postgres | 5432 |
 
-While configuring RDS, create a new parameter group that sets autoVaccum to true or the value "1", associate this parameter group to your RDS instance. Autovacuum is a daemon that automates the execution of VACUUM and ANALYZE (to gather statistics) commands. Autovacuum checks for bloated tables in the database and reclaims the space for reuse.
+> While configuring RDS, create a new parameter group that sets autoVaccum to true or the value "1", associate this parameter group to your RDS instance. Autovacuum is a daemon that automates the execution of VACUUM and ANALYZE (to gather statistics) commands. Autovacuum checks for bloated tables in the database and reclaims the space for reuse.
 
 ### 3.6 Upload LOGIQ professional license
 

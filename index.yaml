@@ -2,8 +2,8 @@ apiVersion: v1
 entries:
   logiq:
   - apiVersion: v2
-    appVersion: 2.0.0
-    created: "2020-08-12T15:35:08.728638-07:00"
+    appVersion: 2.0.1
+    created: "2020-08-18T17:51:18.647771-07:00"
     dependencies:
     - alias: postgres
       condition: global.chart.postgres
@@ -25,7 +25,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 0.16.3
     description: LOGIQ Observability HELM chart for Kubernetes
-    digest: fab89bed7138eb1646441f65938ebb35ab9fd1341f1c09c255a7ad399e6902e1
+    digest: 6f550ffd0a61f2463a37d0ee8e4d7834cbcd009cdc7177e46e8ce97b82f9e781
     home: https://logiq.ai
     icon: https://logiq.ai/wp-content/uploads/2019/11/cropped-clipboard-image.png
     maintainers:
@@ -38,38 +38,6 @@ entries:
     name: logiq
     type: application
     urls:
-    - logiq-2.0.0.tgz
-    version: 2.0.0
-  - apiVersion: v2
-    appVersion: 1.2.1
-    created: "2020-08-12T15:35:08.701063-07:00"
-    dependencies:
-    - alias: postgres
-      name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 8.7.3
-    - alias: redis
-      name: redis
-      repository: https://charts.bitnami.com/bitnami
-      version: 10.6.5
-    - alias: s3-gateway
-      name: minio
-      repository: https://kubernetes-charts.storage.googleapis.com
-      version: 5.0.20
-    description: LOGIQ Observability HELM chart for Kubernetes
-    digest: 62b13bfc90b086278d7367eb551e86fb53e55532f83793db8f7f9b1b63686f45
-    home: https://logiq.ai
-    icon: https://logiq.ai/wp-content/uploads/2019/11/cropped-clipboard-image.png
-    maintainers:
-    - email: ranjan@logiq.ai
-      name: ranjan
-    - email: tito@logiq.ai
-      name: tito
-    - email: ohm@logiq.ai
-      name: ohm
-    name: logiq
-    type: application
-    urls:
-    - logiq-1.0.3.tgz
-    version: 1.0.3
-generated: "2020-08-12T15:35:08.682335-07:00"
+    - logiq-2.0.1.tgz
+    version: 2.0.1
+generated: "2020-08-18T17:51:18.615804-07:00"
