@@ -5,396 +5,392 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="github-markdown.css">
-  <title>Document</title>
+  <title>Logiq Helm</title>
 </head>
 <body>
   <div class="markdown-body">
   <h1 id="k8s-quickstart-guide">K8S Quickstart guide</h1>
-  <h2 id="1-prerequisites">1 - Prerequisites</h2>
-  <p>LOGIQ K8S components are made available as helm charts. Instructions below assume you are using HELM 3. Please read and agree to the <a href="https://docs.logiq.ai/eula/eula">EULA</a> before proceeding.</p>
-  <h3 id="1-1-add-logiq-helm-repository">1.1 Add LOGIQ helm repository</h3>
-  <pre><code class="lang-bash">$ helm repo <span class="hljs-keyword">add</span> logiq-repo https:<span class="hljs-comment">//logiqai.github.io/helm-charts</span>
-  </code></pre>
-  <blockquote>
-  <p>The HELM repository will be named <code>logiq-repo</code>. For installing charts from this repository please make sure to use the repository name as the prefix e.g.</p>
-  <p><code>helm install &lt;deployment_name&gt; logiq-repo/&lt;chart_name&gt;</code></p>
-  </blockquote>
-  <p>You can now run <code>helm search repo logiq-repo</code> to see the available helm charts</p>
-  <pre><code class="lang-bash">$ helm <span class="hljs-keyword">search</span> repo logiq-repo
-  NAME                CHART <span class="hljs-keyword">VERSION</span>    <span class="hljs-keyword">APP</span> <span class="hljs-keyword">VERSION</span>    DESCRIPTION
-  logiq-repo/logiq    2.0.4            2.0.2          LOGIQ Observability Helm chart <span class="hljs-keyword">for</span> Kubernetes
-  </code></pre>
-  <h3 id="1-2-create-namespace-where-logiq-will-be-deployed">1.2 Create namespace where LOGIQ will be deployed</h3>
-  <pre><code class="lang-bash">$ kubectl <span class="hljs-keyword">create</span> <span class="hljs-keyword">namespace</span> logiq
-  </code></pre>
-  <p>This will create a namespace <strong><code>logiq</code></strong> where we will deploy the LOGIQ Log Insights stack.</p>
-  <blockquote>
-  <p>If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps</p>
-  </blockquote>
-  <h3 id="1-3-prepare-your-values-yaml-file">1.3 Prepare your Values YAML file</h3>
-  <p>Sample YAML files for small, medium, large configs can be downloaded at the links below</p>
-  <p><a href="https://docs.logiq.ai/logiq-server/k8s-quickstart-guide#1-3-prepare-your-values-yaml-file">LOGIQ Sample Values.yaml files</a></p>
-  <p>These YAML files can be used for deployment with -f parameter as shown below in the description.</p>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq \
-  --set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq -f Values<span class="hljs-selector-class">.small</span><span class="hljs-selector-class">.yaml</span>
-  </code></pre>
-  <h2 id="2-install-logiq">2. Install LOGIQ</h2>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq <span class="hljs-string">\</span>
-  --set <span class="hljs-built_in">global</span>.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq-repo</span>/<span class="hljs-title">logiq</span></span>
-  </code></pre>
-  <p>This will install LOGIQ and expose the LOGIQ services and UI on the ingress IP. Please refer <a href="k8s-quickstart-guide.md#3-4-changing-the-storage-class">Section 3.4 </a>for details about storage class. Service ports are described in the <a href="https://docs.logiq.ai/logiq-server/quickstart-guide#ports">Port details section</a>. You should now be able to go to <code>http://ingress-ip/</code></p>
-  <p>&gt;</p>
-  <blockquote>
-  <p>The default login and password to use is <code>flash-admin@foo.com</code> and <code>flash-password</code>. You can change these in the UI once logged in. Helm chart can override the default admin settings as well. See section<a href="k8s-quickstart-guide.md#3-7-customize-admin-account"> 3.7</a> on customizing the admin settings</p>
-  </blockquote>
-  <p><img src="https://github.com/logiqai/docs/raw/master/.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png" alt="Logiq Insights Login UI "></p>
-  <p>LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities.<br>Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq-cli">logiqctl, LOGIQ CLI</a> for accessing the above features.</p>
-  <h2 id="3-customizing-the-deployment">3 Customizing the deployment</h2>
-  <h3 id="3-1-enabling-https-for-the-ui">3.1 Enabling https for the UI</h3>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq \
-  -<span class="ruby">-set global.domain=logiq.my-domain.com \
-  </span>-<span class="ruby">-set ingress.tlsEnabled=<span class="hljs-literal">true</span> \
-  </span>-<span class="ruby">-set kubernetes-ingress.controller.defaultTLSSecret.enabled=<span class="hljs-literal">true</span> \
-  </span>-<span class="ruby">-set global.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq</span>-<span class="hljs-title">repo</span>/<span class="hljs-title">logiq</span></span></span>
-  </code></pre>
-  <blockquote>
-  <p>You should now be able to login to LOGIQ UI at your domain using <code>https://logiq.my-domain.com</code> that you set in the ingress after you have updated your DNS server to point to the Ingress controller service IP</p>
-  <p>The default login and password to use is <code>flash-admin@foo.com</code> and <code>flash-password</code>. You can change these in the UI once logged in.</p>
-  <p>The <code>logiq.my-domain.com</code> also fronts all the LOGIQ service ports as described in the <a href="quickstart-guide.md#ports">port details section</a>.</p>
-  </blockquote>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">HELM Option</th>
-  <th style="text-align:left">Description</th>
-  <th style="text-align:left">Defaults</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left"><code>global.domain</code></td>
-  <td style="text-align:left">DNS domain where the LOGIQ service will be running. This is required for HTTPS</td>
-  <td style="text-align:left">No default</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>ingress.tlsEnabled</code></td>
-  <td style="text-align:left">Enable the ingress controler to front HTTPS for services</td>
-  <td style="text-align:left">false</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>kubernetes-ingress.controller.defaultTLSSecret.enabled</code></td>
-  <td style="text-align:left">Specify if a default certificate is enabled for the ingress gateway</td>
-  <td style="text-align:left">false</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>kubernetes-ingress.controller.defaultTLSSecret.secret</code></td>
-  <td style="text-align:left">Specify the name of a TLS Secret for the ingress gateway. If this is not specified, a secret is automatically generated of option <code>kubernetes-ingress.controller.defaultTLSSecret.enabled</code> above is enabled.</td>
-  </tr>
-  </tbody>
-  </table>
-  <h4 id="3-1-1-passing-an-ingress-secret">3.1.1 Passing an ingress secret</h4>
-  <p>If you want to pass your own ingress secret, you can do so when installing the HELM chart</p>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq \
-  --set global.domain=logiq<span class="hljs-selector-class">.my-domain</span><span class="hljs-selector-class">.com</span> \
-  --set ingress.tlsEnabled=true \
-  --set kubernetes-ingress<span class="hljs-selector-class">.controller</span><span class="hljs-selector-class">.defaultTLSSecret</span><span class="hljs-selector-class">.enabled</span>=true \
-  --set kubernetes-ingress<span class="hljs-selector-class">.controller</span><span class="hljs-selector-class">.defaultTLSSecret</span><span class="hljs-selector-class">.secret</span>=&lt;secret_name&gt; \
-  --set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
-  </code></pre>
-  <h3 id="3-2-using-an-aws-s3-bucket">3.2 Using an AWS S3 bucket</h3>
-  <p>Depending on your requirements, you may want to host your storage in your own K8S cluster or create a bucket in a cloud provider like AWS.</p>
-  <p>&gt;</p>
-  <blockquote>
-  <p>Please note that cloud providers may charge data transfer costs between regions. It is important that the LOGIQ cluster be deployed in the same region where the S3 bucket is hosted</p>
-  </blockquote>
-  <h4 id="3-2-1-create-an-access-secret-key-pair-for-creating-and-managing-your-bucket-a-id-3-1-1-a-">3.2.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a></h4>
-  <p>Go to AWS IAM console and create an access key and secret key that can be used to create your bucket and manage access to the bucket for writing and reading your log files</p>
-  <h4 id="3-2-2-deploy-the-logiq-helm-in-gateway-mode">3.2.2 Deploy the LOGIQ helm in gateway mode</h4>
-  <p>Make sure to pass your <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API costs.</p>
-  <blockquote>
-  <p>You do not need to create the bucket, we will automatically provision it for you. Just provide the bucket name and access credentials in the step below.</p>
-  <p>If the bucket already exists, LOGIQ will use it. Check to make sure the access and secret key work with it. Additionally, provide a valid amazon service endpoint for s3 else the config defaults to <a href="https://s3.us-east-1.amazonaws.com">https://s3.us-east-1.amazonaws.com</a></p>
-  </blockquote>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq --set global.domain=logiq<span class="hljs-selector-class">.my-domain</span><span class="hljs-selector-class">.com</span> \
-  --set s3-gateway<span class="hljs-selector-class">.s3gateway</span><span class="hljs-selector-class">.enabled</span>=true \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.s3_bucket</span>=&lt;bucket_name&gt; \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.awsServiceEndpoint</span>=https:<span class="hljs-comment">//s3.&lt;region&gt;.amazonaws.com \</span>
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.AWS_ACCESS_KEY_ID</span>=&lt;access_key&gt; \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.AWS_SECRET_ACCESS_KEY</span>=&lt;secret_key&gt; \
-  --set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
-  </code></pre>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">HELM Option</th>
-  <th style="text-align:left">Description</th>
-  <th style="text-align:left">Defaults</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left"><code>s3-gateway.s3gateway.enabled</code></td>
-  <td style="text-align:left">This helm option switches LOGIQ&#39;s built-in s3 layer to a caching gateway. This is required if your S3 bucket is hosted in an external cloud provider like AWS, GCP, Azure etc.</td>
-  <td style="text-align:left">false</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.s3_bucket</code></td>
-  <td style="text-align:left">Name of the S3 bucket in AWS</td>
-  <td style="text-align:left">logiq</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.awsServiceEndpoint</code></td>
-  <td style="text-align:left">S3 Service endpoint : <a href="https://s3.**&lt;region&gt;**.amazonaws.com">https://s3.**&lt;region&gt;**.amazonaws.com</a></td>
-  <td style="text-align:left"><a href="https://s3.us-east-1.amazonaws.com">https://s3.us-east-1.amazonaws.com</a></td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.AWS_ACCESS_KEY_ID</code></td>
-  <td style="text-align:left">AWS Access key for accessing the bucket</td>
-  <td style="text-align:left">No default</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.AWS_SECRET_ACCESS_KEY</code></td>
-  <td style="text-align:left">AWS Secret key for accessing the bucket</td>
-  <td style="text-align:left">No default</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.s3_region</code></td>
-  <td style="text-align:left">AWS Region where bucket is hosted</td>
-  <td style="text-align:left">us-east-1</td>
-  </tr>
-  </tbody>
-  </table>
-  <blockquote>
-  <p>S3 providers may have restrictions on bucket names for e.g. AWS S3 bucket names are globally unique.</p>
-  </blockquote>
-  <h3 id="3-3-install-logiq-server-certificates-and-client-ca-optional-">3.3 Install LOGIQ server certificates and Client CA <code>[OPTIONAL]</code></h3>
-  <p>LOGIQ supports TLS for all ingest. We also enable non-TLS ports by default. It is however recommended that non-TLS ports not be used unless running in a secure VPC or cluster. The certificates can be provided to the cluster using K8S secrets. Replace the template sections below with your Base64 encoded secret files.</p>
-  <blockquote>
-  <p>If you skip this step, the LOGIQ server automatically generates a ca and a pair of client and server certificates for you to use. you can get them from the ingest server pods under the folder <code>/flash/certs</code></p>
-  </blockquote>
-  <pre><code class="lang-yaml">apiVersion: v1
-  kind: Secret
-  metadata:
-    name: logiq-certs
-  type: Opaque
-  data:
-    ca<span class="hljs-selector-class">.crt</span>: {{ <span class="hljs-selector-class">.Files</span><span class="hljs-selector-class">.Get</span> <span class="hljs-string">"certs/ca.crt.b64"</span> }}
-    syslog<span class="hljs-selector-class">.crt</span>: {{ <span class="hljs-selector-class">.Files</span><span class="hljs-selector-class">.Get</span> <span class="hljs-string">"certs/syslog.crt.b64"</span> }}
-    syslog<span class="hljs-selector-class">.key</span>: {{ <span class="hljs-selector-class">.Files</span><span class="hljs-selector-class">.Get</span> <span class="hljs-string">"certs/syslog.key.b64"</span> }}
-  </code></pre>
-  <p>Save the secret file e.g. <code>logiq-certs.yaml</code>. Proceed to install the secret in the same namespace where you want to deploy LOGIQ</p>
-  <p>The secret can now be passed into the LOGIQ deployment</p>
-  <pre><code class="lang-bash">$ helm install logiq --<span class="hljs-keyword">namespace</span> logiq --<span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span>.domain=logiq.my-domain.com \
-  --<span class="hljs-keyword">set</span> logiq-flash.secrets_name=logiq-certs \
-  --<span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span>.persistence.storageClass=&lt;storage <span class="hljs-keyword">class</span> name&gt; logiq-repo/logiq
-  </code></pre>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">HELM Option</th>
-  <th style="text-align:left">Description</th>
-  <th style="text-align:left">Defaults</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left"><code>logiq-flash.secrets_name</code></td>
-  <td style="text-align:left">TLS certificate key pair and CA cert for TLS transport</td>
-  <td style="text-align:left">No default</td>
-  </tr>
-  </tbody>
-  </table>
-  <h3 id="3-4-changing-the-storage-class">3.4 Changing the storage class</h3>
-  <p>If you are planning on using a specific storage class for your volumes, you can customize it for the LOGIQ deployment. By default, LOGIQ uses the <code>standard</code> storage class</p>
-  <blockquote>
-  <p>It is quite possible that your environment may use a different storage class name for the provisioner. In that case please use the appropriate storage class name. E.g. if a user creates a storage class <code>ebs-volume</code> for the EBS provisioner for their cluster, you can use <code>ebs-volume</code> instead of <code>gp2</code> as suggested below</p>
-  </blockquote>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">Cloud Provider</th>
-  <th style="text-align:left">K8S StorageClassName</th>
-  <th style="text-align:left">Default Provisioner</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left">AWS</td>
-  <td style="text-align:left">gp2</td>
-  <td style="text-align:left">EBS</td>
-  </tr>
-  <tr>
-  <td style="text-align:left">Azure</td>
-  <td style="text-align:left">standard</td>
-  <td style="text-align:left">azure-disc</td>
-  </tr>
-  <tr>
-  <td style="text-align:left">GCP</td>
-  <td style="text-align:left">standard</td>
-  <td style="text-align:left">pd-standard</td>
-  </tr>
-  <tr>
-  <td style="text-align:left">Digital Ocean</td>
-  <td style="text-align:left">do-block-storage</td>
-  <td style="text-align:left">Block Storage Volume</td>
-  </tr>
-  <tr>
-  <td style="text-align:left">Oracle</td>
-  <td style="text-align:left">oci</td>
-  <td style="text-align:left">Block Volume</td>
-  </tr>
-  </tbody>
-  </table>
-  <pre><code class="lang-bash">$ helm upgrade --namespace logiq \
-  -<span class="ruby">-set global.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; \</span>
-  </span>logiq logiq-repo/logiq
-  </code></pre>
-  <h3 id="3-5-using-external-aws-rds-postgres-database-instance">3.5 Using external AWS RDS Postgres database instance</h3>
-  <p>To use external AWS RDS Postgres database for your LOGIQ deployment, execute the following command.</p>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq \
-  --set global<span class="hljs-selector-class">.chart</span><span class="hljs-selector-class">.postgres</span>=false \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.postgres_host</span>=&lt;postgres-host-ip/dns&gt; \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.postgres_user</span>=&lt;username&gt; \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.postgres_password</span>=&lt;password&gt; \
-  --set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
-  </code></pre>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">HELM Option</th>
-  <th style="text-align:left">Description</th>
-  <th style="text-align:left">Default</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left"><code>global.chart.postgres</code></td>
-  <td style="text-align:left">Deploy Postgres which is needed for LOGIQ metadata. Set this to false if an external Postgres cluster is being used</td>
-  <td style="text-align:left">true</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.postgres_host</code></td>
-  <td style="text-align:left">Host IP/DNS for external Postgres</td>
-  <td style="text-align:left">postgres</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.postgres_user</code></td>
-  <td style="text-align:left">Postgres admin user</td>
-  <td style="text-align:left">postgres</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.postgres_password</code></td>
-  <td style="text-align:left">Postgres admin user password</td>
-  <td style="text-align:left">postgres</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.postgres_port</code></td>
-  <td style="text-align:left">Host Port for external Postgres</td>
-  <td style="text-align:left">5432</td>
-  </tr>
-  </tbody>
-  </table>
-  <blockquote>
-  <p>While configuring RDS, create a new parameter group that sets autoVaccum to true or the value &quot;1&quot;, associate this parameter group to your RDS instance. Autovacuum is a daemon that automates the execution of VACUUM and ANALYZE (to gather statistics) commands. Autovacuum checks for bloated tables in the database and reclaims the space for reuse.</p>
-  </blockquote>
-  <h3 id="3-6-upload-logiq-professional-license">3.6 Upload LOGIQ professional license</h3>
-  <p>The deployment described above offers 30 days trial license. Email <code>license@logiq.ai</code> to obtain a professional license. After obtaining the license, use the logiqctl tool to apply the license to the deployment. Please refer <code>logiqctl</code> details at <a href="https://logiqctl.logiq.ai/">https://logiqctl.logiq.ai/</a>. You will need API-token from LOGIQ UI as shown below</p>
-  <p><img src="https://github.com/logiqai/docs/raw/master/.gitbook/assets/Screen-Shot-2020-08-09-ALERT.png" alt="Logiq Insights Login Api-token "></p>
-  <pre><code class="lang-bash"><span class="hljs-string">Setup </span><span class="hljs-string">your </span><span class="hljs-string">LOGIQ </span><span class="hljs-string">Cluster </span><span class="hljs-string">endpoint
-  </span>- <span class="hljs-string">logiqctl </span><span class="hljs-string">config </span><span class="hljs-built_in">set-cluster</span> <span class="hljs-string">logiq.</span><span class="hljs-string">my-domain.</span><span class="hljs-string">com
-  </span>
-  <span class="hljs-string">Sets </span>a <span class="hljs-string">logiq </span><span class="hljs-string">ui </span><span class="hljs-string">api </span><span class="hljs-string">token
-  </span>- <span class="hljs-string">logiqctl </span><span class="hljs-string">config </span><span class="hljs-built_in">set-token</span> <span class="hljs-string">api_token
-  </span>
-  <span class="hljs-string">Upload </span><span class="hljs-string">your </span><span class="hljs-string">LOGIQ </span><span class="hljs-string">deployment </span><span class="hljs-string">license
-  </span>- <span class="hljs-string">logiqctl </span><span class="hljs-string">license </span><span class="hljs-string">set </span>-l=<span class="hljs-string">license.</span><span class="hljs-string">jws
-  </span>
-  <span class="hljs-string">View </span><span class="hljs-string">License </span><span class="hljs-string">information
-  </span> - <span class="hljs-string">logiqctl </span><span class="hljs-string">license </span><span class="hljs-string">get</span>
-  </code></pre>
-  <h3 id="3-7-customize-admin-account">3.7 Customize Admin account</h3>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.admin_name</span>=<span class="hljs-string">"LOGIQ Administrator"</span> \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.admin_password</span>=<span class="hljs-string">"admin_password"</span> \
-  --set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.admin_email</span>=<span class="hljs-string">"admin@example.com"</span> \
-  --set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
-  </code></pre>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">HELM Option</th>
-  <th style="text-align:left">Description</th>
-  <th style="text-align:left">Default</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left"><code>global.environment.admin_name</code></td>
-  <td style="text-align:left">LOGIQ Administrator name</td>
-  <td style="text-align:left">flash-admin@foo.com</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.admin_password</code></td>
-  <td style="text-align:left">LOGIQ Administrator password</td>
-  <td style="text-align:left">flash-password</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.admin_email</code></td>
-  <td style="text-align:left">LOGIQ Administrator e-mail</td>
-  <td style="text-align:left">flash-admin@foo.com</td>
-  </tr>
-  </tbody>
-  </table>
-  <h3 id="3-8-using-external-redis-instance">3.8 Using external Redis instance</h3>
-  <p>To use external Redis for your LOGIQ deployment, execute the following command.</p>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq <span class="hljs-string">\</span>
-  --set <span class="hljs-built_in">global</span>.chart.redis=<span class="hljs-literal">false</span> <span class="hljs-string">\</span>
-  --set <span class="hljs-built_in">global</span>.environment.redis_host=&lt;redis-host-ip/dns&gt; <span class="hljs-string">\</span>
-  --set <span class="hljs-built_in">global</span>.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq-repo</span>/<span class="hljs-title">logiq</span></span>
-  </code></pre>
-  <table>
-  <thead>
-  <tr>
-  <th style="text-align:left">HELM Option</th>
-  <th style="text-align:left">Description</th>
-  <th style="text-align:left">Default</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td style="text-align:left"><code>global.chart.redis</code></td>
-  <td style="text-align:left">Deploy Redis which is needed for log tailing. Set this to false if an external Redis cluster is being used</td>
-  <td style="text-align:left">true</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.redis_host</code></td>
-  <td style="text-align:left">Host IP/DNS of the external Redis cluster</td>
-  <td style="text-align:left">redis-master</td>
-  </tr>
-  <tr>
-  <td style="text-align:left"><code>global.environment.redis_port</code></td>
-  <td style="text-align:left">Host Port where external Redis service is exposed</td>
-  <td style="text-align:left">6379</td>
-  </tr>
-  </tbody>
-  </table>
-  <h3 id="3-9-configuring-cluster-id">3.9 Configuring cluster id</h3>
-  <p>When deploying LOGIQ configure the cluster id to monitor the LOGIQ deployment. For details about the <code>cluster_id</code> refer to section <a href="agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance">Managing multiple K8S clusters</a></p>
-  <pre><code class="lang-bash">$ helm install logiq --namespace logiq <span class="hljs-string">\</span>
-  --set <span class="hljs-built_in">global</span>.environment.cluster_id=&lt;cluster id&gt; <span class="hljs-string">\</span>
-  --set <span class="hljs-built_in">global</span>.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq-repo</span>/<span class="hljs-title">logiq</span></span>
-  </code></pre>
-  <h2 id="4-teardown">4 Teardown</h2>
-  <p>If and when you want to decommission the installation using the following commands</p>
-  <pre><code class="lang-bash">$ helm <span class="hljs-keyword">delete</span> logiq --<span class="hljs-keyword">namespace</span> logiq
-  $ helm repo <span class="hljs-built_in">remove</span> logiq-repo
-  $ kubectl <span class="hljs-keyword">delete</span> <span class="hljs-keyword">namespace</span> logiq
-  </code></pre>
-  <p>If you followed installation steps in section 3.1 - Using an AWS S3 bucket, you may want to delete the s3 bucket that was specified at deployment time.</p>
-  
+<h2 id="1-prerequisites">1 - Prerequisites</h2>
+<p>LOGIQ K8S components are made available as helm charts. Instructions below assume you are using HELM 3. Please read and agree to the <a href="https://docs.logiq.ai/eula/eula">EULA</a> before proceeding.</p>
+<h3 id="1-1-add-logiq-helm-repository">1.1 Add LOGIQ helm repository</h3>
+<pre><code class="lang-bash">$ helm repo <span class="hljs-keyword">add</span> logiq-repo https:<span class="hljs-comment">//logiqai.github.io/helm-charts</span>
+</code></pre>
+<blockquote>
+<p>The HELM repository will be named <code>logiq-repo</code>. For installing charts from this repository please make sure to use the repository name as the prefix e.g.</p>
+<p><code>helm install &lt;deployment_name&gt; logiq-repo/&lt;chart_name&gt;</code></p>
+</blockquote>
+<p>You can now run <code>helm search repo logiq-repo</code> to see the available helm charts</p>
+<pre><code class="lang-bash">$ helm <span class="hljs-keyword">search</span> repo logiq-repo
+NAME                CHART <span class="hljs-keyword">VERSION</span>    <span class="hljs-keyword">APP</span> <span class="hljs-keyword">VERSION</span>    DESCRIPTION
+logiq-repo/logiq    2.0.5            2.0.3          LOGIQ Observability Helm chart <span class="hljs-keyword">for</span> Kubernetes
+</code></pre>
+<h3 id="1-2-create-namespace-where-logiq-will-be-deployed">1.2 Create namespace where LOGIQ will be deployed</h3>
+<pre><code class="lang-bash">$ kubectl <span class="hljs-keyword">create</span> <span class="hljs-keyword">namespace</span> logiq
+</code></pre>
+<p>This will create a namespace <strong><code>logiq</code></strong> where we will deploy the LOGIQ Log Insights stack.</p>
+<blockquote>
+<p>If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps</p>
+</blockquote>
+<h3 id="1-3-prepare-your-values-yaml-file">1.3 Prepare your Values YAML file</h3>
+<p>Sample YAML files for small, medium, large configs can be downloaded at the links below</p>
+<p><a href="https://docs.logiq.ai/logiq-server/k8s-quickstart-guide#1-3-prepare-your-values-yaml-file">LOGIQ Sample Values.yaml files</a></p>
+<p>These YAML files can be used for deployment with -f parameter as shown below in the description.</p>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq \
+--set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq -f Values<span class="hljs-selector-class">.small</span><span class="hljs-selector-class">.yaml</span>
+</code></pre>
+<h2 id="2-install-logiq">2. Install LOGIQ</h2>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq <span class="hljs-string">\</span>
+--set <span class="hljs-built_in">global</span>.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq-repo</span>/<span class="hljs-title">logiq</span></span>
+</code></pre>
+<p>This will install LOGIQ and expose the LOGIQ services and UI on the ingress IP. Please refer <a href="k8s-quickstart-guide.md#3-4-changing-the-storage-class">Section 3.4 </a>for details about storage class. Service ports are described in the <a href="https://docs.logiq.ai/logiq-server/quickstart-guide#ports">Port details section</a>. You should now be able to go to <code>http://ingress-ip/</code></p>
+<p>&gt;</p>
+<blockquote>
+<p>The default login and password to use is <code>flash-admin@foo.com</code> and <code>flash-password</code>. You can change these in the UI once logged in. Helm chart can override the default admin settings as well. See section<a href="k8s-quickstart-guide.md#3-7-customize-admin-account"> 3.7</a> on customizing the admin settings</p>
+</blockquote>
+<p><img src="https://github.com/logiqai/docs/raw/master/.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png" alt="Logiq Insights Login UI "></p>
+<p>LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities.<br>Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq-cli">logiqctl, LOGIQ CLI</a> for accessing the above features.</p>
+<h2 id="3-customizing-the-deployment">3 Customizing the deployment</h2>
+<h3 id="3-1-enabling-https-for-the-ui">3.1 Enabling https for the UI</h3>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq \
+-<span class="ruby">-set global.domain=logiq.my-domain.com \
+</span>-<span class="ruby">-set ingress.tlsEnabled=<span class="hljs-literal">true</span> \
+</span>-<span class="ruby">-set kubernetes-ingress.controller.defaultTLSSecret.enabled=<span class="hljs-literal">true</span> \
+</span>-<span class="ruby">-set global.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq</span>-<span class="hljs-title">repo</span>/<span class="hljs-title">logiq</span></span></span>
+</code></pre>
+<blockquote>
+<p>You should now be able to login to LOGIQ UI at your domain using <code>https://logiq.my-domain.com</code> that you set in the ingress after you have updated your DNS server to point to the Ingress controller service IP</p>
+<p>The default login and password to use is <code>flash-admin@foo.com</code> and <code>flash-password</code>. You can change these in the UI once logged in.</p>
+<p>The <code>logiq.my-domain.com</code> also fronts all the LOGIQ service ports as described in the <a href="quickstart-guide.md#ports">port details section</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">HELM Option</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Defaults</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>global.domain</code></td>
+<td style="text-align:left">DNS domain where the LOGIQ service will be running. This is required for HTTPS</td>
+<td style="text-align:left">No default</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>ingress.tlsEnabled</code></td>
+<td style="text-align:left">Enable the ingress controler to front HTTPS for services</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>kubernetes-ingress.controller.defaultTLSSecret.enabled</code></td>
+<td style="text-align:left">Specify if a default certificate is enabled for the ingress gateway</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>kubernetes-ingress.controller.defaultTLSSecret.secret</code></td>
+<td style="text-align:left">Specify the name of a TLS Secret for the ingress gateway. If this is not specified, a secret is automatically generated of option <code>kubernetes-ingress.controller.defaultTLSSecret.enabled</code> above is enabled.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-1-1-passing-an-ingress-secret">3.1.1 Passing an ingress secret</h4>
+<p>If you want to pass your own ingress secret, you can do so when installing the HELM chart</p>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq \
+--set global.domain=logiq<span class="hljs-selector-class">.my-domain</span><span class="hljs-selector-class">.com</span> \
+--set ingress.tlsEnabled=true \
+--set kubernetes-ingress<span class="hljs-selector-class">.controller</span><span class="hljs-selector-class">.defaultTLSSecret</span><span class="hljs-selector-class">.enabled</span>=true \
+--set kubernetes-ingress<span class="hljs-selector-class">.controller</span><span class="hljs-selector-class">.defaultTLSSecret</span><span class="hljs-selector-class">.secret</span>=&lt;secret_name&gt; \
+--set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
+</code></pre>
+<h3 id="3-2-using-an-aws-s3-bucket">3.2 Using an AWS S3 bucket</h3>
+<p>Depending on your requirements, you may want to host your storage in your own K8S cluster or create a bucket in a cloud provider like AWS.</p>
+<p>&gt;</p>
+<blockquote>
+<p>Please note that cloud providers may charge data transfer costs between regions. It is important that the LOGIQ cluster be deployed in the same region where the S3 bucket is hosted</p>
+</blockquote>
+<h4 id="3-2-1-create-an-access-secret-key-pair-for-creating-and-managing-your-bucket-a-id-3-1-1-a-">3.2.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a></h4>
+<p>Go to AWS IAM console and create an access key and secret key that can be used to create your bucket and manage access to the bucket for writing and reading your log files</p>
+<h4 id="3-2-2-deploy-the-logiq-helm-in-gateway-mode">3.2.2 Deploy the LOGIQ helm in gateway mode</h4>
+<p>Make sure to pass your <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API costs.</p>
+<blockquote>
+<p>You do not need to create the bucket, we will automatically provision it for you. Just provide the bucket name and access credentials in the step below.</p>
+<p>If the bucket already exists, LOGIQ will use it. Check to make sure the access and secret key work with it. Additionally, provide a valid amazon service endpoint for s3 else the config defaults to <a href="https://s3.us-east-1.amazonaws.com">https://s3.us-east-1.amazonaws.com</a></p>
+</blockquote>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq --set global.domain=logiq<span class="hljs-selector-class">.my-domain</span><span class="hljs-selector-class">.com</span> \
+--set s3-gateway<span class="hljs-selector-class">.s3gateway</span><span class="hljs-selector-class">.enabled</span>=true \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.s3_bucket</span>=&lt;bucket_name&gt; \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.awsServiceEndpoint</span>=https:<span class="hljs-comment">//s3.&lt;region&gt;.amazonaws.com \</span>
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.AWS_ACCESS_KEY_ID</span>=&lt;access_key&gt; \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.AWS_SECRET_ACCESS_KEY</span>=&lt;secret_key&gt; \
+--set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">HELM Option</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Defaults</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>s3-gateway.s3gateway.enabled</code></td>
+<td style="text-align:left">This helm option switches LOGIQ&#39;s built-in s3 layer to a caching gateway. This is required if your S3 bucket is hosted in an external cloud provider like AWS, GCP, Azure etc.</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.s3_bucket</code></td>
+<td style="text-align:left">Name of the S3 bucket in AWS</td>
+<td style="text-align:left">logiq</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.awsServiceEndpoint</code></td>
+<td style="text-align:left">S3 Service endpoint : <a href="https://s3.**&lt;region&gt;**.amazonaws.com">https://s3.**&lt;region&gt;**.amazonaws.com</a></td>
+<td style="text-align:left"><a href="https://s3.us-east-1.amazonaws.com">https://s3.us-east-1.amazonaws.com</a></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.AWS_ACCESS_KEY_ID</code></td>
+<td style="text-align:left">AWS Access key for accessing the bucket</td>
+<td style="text-align:left">No default</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.AWS_SECRET_ACCESS_KEY</code></td>
+<td style="text-align:left">AWS Secret key for accessing the bucket</td>
+<td style="text-align:left">No default</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.s3_region</code></td>
+<td style="text-align:left">AWS Region where bucket is hosted</td>
+<td style="text-align:left">us-east-1</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>S3 providers may have restrictions on bucket names for e.g. AWS S3 bucket names are globally unique.</p>
+</blockquote>
+<h3 id="3-3-install-logiq-server-certificates-and-client-ca-optional-">3.3 Install LOGIQ server certificates and Client CA <code>[OPTIONAL]</code></h3>
+<p>LOGIQ supports TLS for all ingest. We also enable non-TLS ports by default. It is however recommended that non-TLS ports not be used unless running in a secure VPC or cluster. The certificates can be provided to the cluster using K8S secrets. Replace the template sections below with your Base64 encoded secret files.</p>
+<blockquote>
+<p>If you skip this step, the LOGIQ server automatically generates a ca and a pair of client and server certificates for you to use. you can get them from the ingest server pods under the folder <code>/flash/certs</code></p>
+</blockquote>
+<pre><code class="lang-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: logiq-certs
+type: Opaque
+data:
+  ca<span class="hljs-selector-class">.crt</span>: {{ <span class="hljs-selector-class">.Files</span><span class="hljs-selector-class">.Get</span> <span class="hljs-string">"certs/ca.crt.b64"</span> }}
+  syslog<span class="hljs-selector-class">.crt</span>: {{ <span class="hljs-selector-class">.Files</span><span class="hljs-selector-class">.Get</span> <span class="hljs-string">"certs/syslog.crt.b64"</span> }}
+  syslog<span class="hljs-selector-class">.key</span>: {{ <span class="hljs-selector-class">.Files</span><span class="hljs-selector-class">.Get</span> <span class="hljs-string">"certs/syslog.key.b64"</span> }}
+</code></pre>
+<p>Save the secret file e.g. <code>logiq-certs.yaml</code>. Proceed to install the secret in the same namespace where you want to deploy LOGIQ</p>
+<p>The secret can now be passed into the LOGIQ deployment</p>
+<pre><code class="lang-bash">$ helm install logiq --<span class="hljs-keyword">namespace</span> logiq --<span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span>.domain=logiq.my-domain.com \
+--<span class="hljs-keyword">set</span> logiq-flash.secrets_name=logiq-certs \
+--<span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span>.persistence.storageClass=&lt;storage <span class="hljs-keyword">class</span> name&gt; logiq-repo/logiq
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">HELM Option</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Defaults</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>logiq-flash.secrets_name</code></td>
+<td style="text-align:left">TLS certificate key pair and CA cert for TLS transport</td>
+<td style="text-align:left">No default</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-4-changing-the-storage-class">3.4 Changing the storage class</h3>
+<p>If you are planning on using a specific storage class for your volumes, you can customize it for the LOGIQ deployment. By default, LOGIQ uses the <code>standard</code> storage class</p>
+<blockquote>
+<p>It is quite possible that your environment may use a different storage class name for the provisioner. In that case please use the appropriate storage class name. E.g. if a user creates a storage class <code>ebs-volume</code> for the EBS provisioner for their cluster, you can use <code>ebs-volume</code> instead of <code>gp2</code> as suggested below</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Cloud Provider</th>
+<th style="text-align:left">K8S StorageClassName</th>
+<th style="text-align:left">Default Provisioner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AWS</td>
+<td style="text-align:left">gp2</td>
+<td style="text-align:left">EBS</td>
+</tr>
+<tr>
+<td style="text-align:left">Azure</td>
+<td style="text-align:left">standard</td>
+<td style="text-align:left">azure-disc</td>
+</tr>
+<tr>
+<td style="text-align:left">GCP</td>
+<td style="text-align:left">standard</td>
+<td style="text-align:left">pd-standard</td>
+</tr>
+<tr>
+<td style="text-align:left">Digital Ocean</td>
+<td style="text-align:left">do-block-storage</td>
+<td style="text-align:left">Block Storage Volume</td>
+</tr>
+<tr>
+<td style="text-align:left">Oracle</td>
+<td style="text-align:left">oci</td>
+<td style="text-align:left">Block Volume</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="lang-bash">$ helm upgrade --namespace logiq \
+-<span class="ruby">-set global.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; \</span>
+</span>logiq logiq-repo/logiq
+</code></pre>
+<h3 id="3-5-using-external-aws-rds-postgres-database-instance">3.5 Using external AWS RDS Postgres database instance</h3>
+<p>To use external AWS RDS Postgres database for your LOGIQ deployment, execute the following command.</p>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq \
+--set global<span class="hljs-selector-class">.chart</span><span class="hljs-selector-class">.postgres</span>=false \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.postgres_host</span>=&lt;postgres-host-ip/dns&gt; \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.postgres_user</span>=&lt;username&gt; \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.postgres_password</span>=&lt;password&gt; \
+--set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">HELM Option</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>global.chart.postgres</code></td>
+<td style="text-align:left">Deploy Postgres which is needed for LOGIQ metadata. Set this to false if an external Postgres cluster is being used</td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.postgres_host</code></td>
+<td style="text-align:left">Host IP/DNS for external Postgres</td>
+<td style="text-align:left">postgres</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.postgres_user</code></td>
+<td style="text-align:left">Postgres admin user</td>
+<td style="text-align:left">postgres</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.postgres_password</code></td>
+<td style="text-align:left">Postgres admin user password</td>
+<td style="text-align:left">postgres</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.postgres_port</code></td>
+<td style="text-align:left">Host Port for external Postgres</td>
+<td style="text-align:left">5432</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>While configuring RDS, create a new parameter group that sets autoVaccum to true or the value &quot;1&quot;, associate this parameter group to your RDS instance. Autovacuum is a daemon that automates the execution of VACUUM and ANALYZE (to gather statistics) commands. Autovacuum checks for bloated tables in the database and reclaims the space for reuse.</p>
+</blockquote>
+<h3 id="3-6-upload-logiq-professional-license">3.6 Upload LOGIQ professional license</h3>
+<p>The deployment described above offers 30 days trial license. Email <code>license@logiq.ai</code> to obtain a professional license. After obtaining the license, use the logiqctl tool to apply the license to the deployment. Please refer <code>logiqctl</code> details at <a href="https://logiqctl.logiq.ai/">https://logiqctl.logiq.ai/</a>. You will need API-token from LOGIQ UI as shown below</p>
+<p><img src="https://github.com/logiqai/docs/raw/master/.gitbook/assets/Screen-Shot-2020-08-09-ALERT.png" alt="Logiq Insights Login Api-token "></p>
+<pre><code class="lang-bash"><span class="hljs-string">Setup </span><span class="hljs-string">your </span><span class="hljs-string">LOGIQ </span><span class="hljs-string">Cluster </span><span class="hljs-string">endpoint
+</span>- <span class="hljs-string">logiqctl </span><span class="hljs-string">config </span><span class="hljs-built_in">set-cluster</span> <span class="hljs-string">logiq.</span><span class="hljs-string">my-domain.</span><span class="hljs-string">com
+</span>
+<span class="hljs-string">Sets </span>a <span class="hljs-string">logiq </span><span class="hljs-string">ui </span><span class="hljs-string">api </span><span class="hljs-string">token
+</span>- <span class="hljs-string">logiqctl </span><span class="hljs-string">config </span><span class="hljs-built_in">set-token</span> <span class="hljs-string">api_token
+</span>
+<span class="hljs-string">Upload </span><span class="hljs-string">your </span><span class="hljs-string">LOGIQ </span><span class="hljs-string">deployment </span><span class="hljs-string">license
+</span>- <span class="hljs-string">logiqctl </span><span class="hljs-string">license </span><span class="hljs-string">set </span>-l=<span class="hljs-string">license.</span><span class="hljs-string">jws
+</span>
+<span class="hljs-string">View </span><span class="hljs-string">License </span><span class="hljs-string">information
+</span> - <span class="hljs-string">logiqctl </span><span class="hljs-string">license </span><span class="hljs-string">get</span>
+</code></pre>
+<h3 id="3-7-customize-admin-account">3.7 Customize Admin account</h3>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.admin_name</span>=<span class="hljs-string">"LOGIQ Administrator"</span> \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.admin_password</span>=<span class="hljs-string">"admin_password"</span> \
+--set global<span class="hljs-selector-class">.environment</span><span class="hljs-selector-class">.admin_email</span>=<span class="hljs-string">"admin@example.com"</span> \
+--set global<span class="hljs-selector-class">.persistence</span><span class="hljs-selector-class">.storageClass</span>=&lt;storage class name&gt; logiq-repo/logiq
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">HELM Option</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>global.environment.admin_name</code></td>
+<td style="text-align:left">LOGIQ Administrator name</td>
+<td style="text-align:left">flash-admin@foo.com</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.admin_password</code></td>
+<td style="text-align:left">LOGIQ Administrator password</td>
+<td style="text-align:left">flash-password</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.admin_email</code></td>
+<td style="text-align:left">LOGIQ Administrator e-mail</td>
+<td style="text-align:left">flash-admin@foo.com</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-8-using-external-redis-instance">3.8 Using external Redis instance</h3>
+<p>To use external Redis for your LOGIQ deployment, execute the following command.</p>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq <span class="hljs-string">\</span>
+--set <span class="hljs-built_in">global</span>.chart.redis=<span class="hljs-literal">false</span> <span class="hljs-string">\</span>
+--set <span class="hljs-built_in">global</span>.environment.redis_host=&lt;redis-host-ip/dns&gt; <span class="hljs-string">\</span>
+--set <span class="hljs-built_in">global</span>.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq-repo</span>/<span class="hljs-title">logiq</span></span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">HELM Option</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>global.chart.redis</code></td>
+<td style="text-align:left">Deploy Redis which is needed for log tailing. Set this to false if an external Redis cluster is being used</td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.redis_host</code></td>
+<td style="text-align:left">Host IP/DNS of the external Redis cluster</td>
+<td style="text-align:left">redis-master</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>global.environment.redis_port</code></td>
+<td style="text-align:left">Host Port where external Redis service is exposed</td>
+<td style="text-align:left">6379</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-9-configuring-cluster-id">3.9 Configuring cluster id</h3>
+<p>When deploying LOGIQ configure the cluster id to monitor the LOGIQ deployment. For details about the <code>cluster_id</code> refer to section <a href="agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance">Managing multiple K8S clusters</a></p>
+<pre><code class="lang-bash">$ helm install logiq --namespace logiq <span class="hljs-string">\</span>
+--set <span class="hljs-built_in">global</span>.environment.cluster_id=&lt;cluster id&gt; <span class="hljs-string">\</span>
+--set <span class="hljs-built_in">global</span>.persistence.storageClass=&lt;storage <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">name</span>&gt; <span class="hljs-title">logiq-repo</span>/<span class="hljs-title">logiq</span></span>
+</code></pre>
+<h2 id="4-teardown">4 Teardown</h2>
+<p>If and when you want to decommission the installation using the following commands</p>
+<pre><code class="lang-bash">$ helm <span class="hljs-keyword">delete</span> logiq --<span class="hljs-keyword">namespace</span> logiq
+$ helm repo <span class="hljs-built_in">remove</span> logiq-repo
+$ kubectl <span class="hljs-keyword">delete</span> <span class="hljs-keyword">namespace</span> logiq
+</code></pre>
+<p>If you followed installation steps in section 3.1 - Using an AWS S3 bucket, you may want to delete the s3 bucket that was specified at deployment time.</p>
 </div>
-  
 </body>
 </html>
-
-
