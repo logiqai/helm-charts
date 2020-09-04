@@ -25,7 +25,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME                CHART VERSION    APP VERSION    DESCRIPTION
-logiq-repo/logiq    2.0.8            2.0.5          LOGIQ Observability Helm chart for Kubernetes
+logiq-repo/logiq    2.0.9            2.0.5          LOGIQ Observability Helm chart for Kubernetes
 ```
 
 ### 1.2 Create namespace where LOGIQ will be deployed
@@ -51,6 +51,7 @@ These YAML files can be used for deployment with -f parameter as shown below in 
 $ helm install logiq --namespace logiq \
 --set global.persistence.storageClass=<storage class name> logiq-repo/logiq -f Values.small.yaml
 ```
+Please refer [Section 3.10 ](k8s-quickstart-guide.md#3-10-sizing-your-LOGIQ-cluster) for sizing your LOGIQ cluster as specified  in these yaml files.
 
 ## 2. Install LOGIQ
 
@@ -282,13 +283,23 @@ $ helm install logiq --namespace logiq \
 
 ### 3.9 Configuring cluster id
 
-When deploying LOGIQ configure the cluster id to monitor the LOGIQ deployment. For details about the `cluster_id` refer to section [Managing multiple K8S clusters](agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance)
+When deploying LOGIQ, configure the cluster id to monitor your own LOGIQ deployment. For details about the `cluster_id` refer to section [Managing multiple K8S clusters](agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance)
 
 ```bash
 $ helm install logiq --namespace logiq \
 --set global.environment.cluster_id=<cluster id> \
 --set global.persistence.storageClass=<storage class name> logiq-repo/logiq
 ```
+
+### 3.10 Sizing your LOGIQ cluster
+
+When deploying LOGIQ, size your infrastructure to provide appropriate vcpu and memory requirements. We recommened the following size for small. medium and large cluster specification from [Section 1.3 ](k8s-quickstart-guide.md#1-3-prepare-your-values-YAML-file) values yaml files.
+
+| LOGIQ Cluster | vCPU| Memory | NodeCount |
+| :--- | :--- | :--- | :--- |
+| small | 12| 32 gb | 3 |
+| medium  | 20| 56 gb | 5 |
+| large  | 32| 88 gb | 8 |
 
 ## 4 Teardown
 
