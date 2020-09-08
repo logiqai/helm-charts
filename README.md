@@ -25,7 +25,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME                CHART VERSION    APP VERSION    DESCRIPTION
-logiq-repo/logiq    2.0.9            2.0.5          LOGIQ Observability Helm chart for Kubernetes
+logiq-repo/logiq    2.1.0           2.0.6          LOGIQ Observability Helm chart for Kubernetes
 ```
 
 ### 1.2 Create namespace where LOGIQ will be deployed
@@ -283,7 +283,7 @@ $ helm install logiq --namespace logiq \
 
 ### 3.9 Configuring cluster id
 
-When deploying LOGIQ, configure the cluster id to monitor your own LOGIQ deployment. For details about the `cluster_id` refer to section [Managing multiple K8S clusters](agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance)
+When deploying LOGIQ configure the cluster id to monitor the LOGIQ deployment. For details about the `cluster_id` refer to section [Managing multiple K8S clusters](agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance)
 
 ```bash
 $ helm install logiq --namespace logiq \
