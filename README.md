@@ -305,6 +305,34 @@ When deploying LOGIQ, size your infrastructure to provide appropriate vcpu and m
 | medium  | 20| 56 gb | 5 |
 | large  | 32| 88 gb | 8 |
 
+### 3.11 NodePort/ClusterIP/LoadBalancer
+
+The service type configurations are exposed in values.yaml as below 
+
+```bash
+flash-coffee:
+  service:
+    type: ClusterIP
+logiq-flash:
+  service:
+    type: NodePort
+kubernetes-ingress:
+  controller:
+    service:
+      type: LoadBalancer
+
+```
+
+For e.g. if you are running on bare-metal and want an external LB to front LOGIQ, configure all services as `NodePort`
+
+```bash
+helm install logiq -n logiq -f values.yaml \
+--set flash-coffee.service.type=NodePort \
+--set logiq-flash.service.type=NodePort \
+--set kubernetes-ingress.controller.service.type=NodePort \
+logiq-repo/logiq
+```
+
 ## 4 Teardown
 
 If and when you want to decommission the installation using the following commands
