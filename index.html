@@ -2,7 +2,7 @@
 <h2 id="prerequisites">1 - Prerequisites</h2>
 <p>LOGIQ K8S components are made available as helm charts. Instructions below assume you are using HELM 3. Please read and agree to the <a href="https://docs.logiq.ai/eula/eula">EULA</a> before proceeding.</p>
 <h3 id="add-logiq-helm-repository">1.1 Add LOGIQ helm repository</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>$ <span class="ex">helm</span> repo add logiq-repo https://logiqai.github.io/helm-charts</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="ex">helm</span> repo add logiq-repo https://logiqai.github.io/helm-charts</span></code></pre></div>
 <blockquote>
 <p>The HELM repository will be named <code>logiq-repo</code>. For installing charts from this repository please make sure to use the repository name as the prefix e.g.</p>
 <p><code>helm install &lt;deployment_name&gt; logiq-repo/&lt;chart_name&gt;</code></p>
@@ -10,22 +10,25 @@
 <p>You can now run <code>helm search repo logiq-repo</code> to see the available helm charts</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>$ <span class="ex">helm</span> search repo logiq-repo</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">NAME</span>                CHART VERSION    APP VERSION    DESCRIPTION</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">logiq-repo/logiq</span>    2.1.0           2.0.6          LOGIQ Observability Helm chart for Kubernetes</span></code></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">logiq-repo/logiq</span>    2.1.0            2.0.6          LOGIQ Observability HELM chart for Kubernetes</span></code></pre></div>
 <h3 id="create-namespace-where-logiq-will-be-deployed">1.2 Create namespace where LOGIQ will be deployed</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>$ <span class="ex">kubectl</span> create namespace logiq</span></code></pre></div>
+<blockquote>
+<p>NOTE: Namespace name cannot be more than 15 characters in length</p>
+</blockquote>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">kubectl</span> create namespace logiq</span></code></pre></div>
 <p>This will create a namespace <strong><code>logiq</code></strong> where we will deploy the LOGIQ Log Insights stack.</p>
 <blockquote>
 <p>If you choose a different name for the namespace, please remember to use the same namespace for the remainder of the steps</p>
 </blockquote>
 <h3 id="prepare-your-values-yaml-file">1.3 Prepare your Values YAML file</h3>
-<p>Sample YAML files for small, medium, large configs can be downloaded at the links below</p>
+<p>Sample YAML files for small, medium, large cluster configs can be downloaded at the links below</p>
 <p><a href="https://docs.logiq.ai/logiq-server/k8s-quickstart-guide#1-3-prepare-your-values-yaml-file">LOGIQ Sample Values.yaml files</a></p>
 <p>These YAML files can be used for deployment with -f parameter as shown below in the description.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq -f Values.small.yaml</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq -f values.small.yaml</span></code></pre></div>
 <p>Please refer <a href="k8s-quickstart-guide.md#3-10-sizing-your-LOGIQ-cluster">Section 3.10</a> for sizing your LOGIQ cluster as specified in these yaml files.</p>
 <h2 id="install-logiq">2. Install LOGIQ</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq</span></code></pre></div>
 <p>This will install LOGIQ and expose the LOGIQ services and UI on the ingress IP. Please refer <a href="k8s-quickstart-guide.md#3-4-changing-the-storage-class">Section 3.4</a>for details about storage class. Service ports are described in the <a href="https://docs.logiq.ai/logiq-server/quickstart-guide#ports">Port details section</a>. You should now be able to go to <code>http://ingress-ip/</code></p>
 <blockquote>
@@ -38,7 +41,7 @@
 Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq-cli">logiqctl, LOGIQ CLI</a> for accessing the above features.</p>
 <h2 id="customizing-the-deployment">3 Customizing the deployment</h2>
 <h3 id="enabling-https-for-the-ui">3.1 Enabling https for the UI</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="ex">--set</span> global.domain=logiq.my-domain.com <span class="kw">\</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="ex">--set</span> ingress.tlsEnabled=true <span class="kw">\</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="ex">--set</span> kubernetes-ingress.controller.defaultTLSSecret.enabled=true <span class="kw">\</span></span>
@@ -71,7 +74,7 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>ingress.tlsEnabled</code></td>
-<td style="text-align: left;">Enable the ingress controler to front HTTPS for services</td>
+<td style="text-align: left;">Enable the ingress controller to front HTTPS for services</td>
 <td style="text-align: left;">false</td>
 </tr>
 <tr class="odd">
@@ -88,7 +91,7 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </table>
 <h4 id="passing-an-ingress-secret">3.1.1 Passing an ingress secret</h4>
 <p>If you want to pass your own ingress secret, you can do so when installing the HELM chart</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="ex">--set</span> global.domain=logiq.my-domain.com <span class="kw">\</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="ex">--set</span> ingress.tlsEnabled=true <span class="kw">\</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="ex">--set</span> kubernetes-ingress.controller.defaultTLSSecret.enabled=true <span class="kw">\</span></span>
@@ -102,12 +105,13 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 <h4 id="create-an-accesssecret-key-pair-for-creating-and-managing-your-bucket">3.2.1 Create an access/secret key pair for creating and managing your bucket <a id="3-1-1"></a></h4>
 <p>Go to AWS IAM console and create an access key and secret key that can be used to create your bucket and manage access to the bucket for writing and reading your log files</p>
 <h4 id="deploy-the-logiq-helm-in-gateway-mode">3.2.2 Deploy the LOGIQ helm in gateway mode</h4>
-<p>Make sure to pass your <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API costs.</p>
+<p>Make sure to pass your <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> and give a bucket name. The S3 gateway acts as a caching gateway and helps reduce API costs.<br />
+Create a bucket in AWS s3 with a unique bucket name in the region where you plan to host the deployment.</p>
 <blockquote>
 <p>You do not need to create the bucket, we will automatically provision it for you. Just provide the bucket name and access credentials in the step below.</p>
 <p>If the bucket already exists, LOGIQ will use it. Check to make sure the access and secret key work with it. Additionally, provide a valid amazon service endpoint for s3 else the config defaults to <a href="https://s3.us-east-1.amazonaws.com">https://s3.us-east-1.amazonaws.com</a></p>
 </blockquote>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq --set global.domain=logiq.my-domain.com <span class="kw">\</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq --set global.domain=logiq.my-domain.com <span class="kw">\</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="ex">--set</span> s3-gateway.s3gateway.enabled=true <span class="kw">\</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="ex">--set</span> global.environment.s3_bucket=<span class="op">&lt;</span>bucket_name<span class="op">&gt;</span> <span class="kw">\</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="ex">--set</span> global.environment.awsServiceEndpoint=https://s3.<span class="op">&lt;</span>region<span class="op">&gt;</span>.amazonaws.com <span class="kw">\</span></span>
@@ -140,8 +144,8 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>global.environment.awsServiceEndpoint</code></td>
-<td style="text-align: left;">S3 Service endpoint : https://s3.<strong>&lt;region&gt;</strong>.amazonaws.com</td>
-<td style="text-align: left;">https://s3.us-east-1.amazonaws.com</td>
+<td style="text-align: left;">S3 Service endpoint : <a href="https://s3.**%3Cregion%3E**.amazonaws.com">https://s3.**&lt;region&gt;**.amazonaws.com</a></td>
+<td style="text-align: left;"><a href="https://s3.us-east-1.amazonaws.com">https://s3.us-east-1.amazonaws.com</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>global.environment.AWS_ACCESS_KEY_ID</code></td>
@@ -155,7 +159,7 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>global.environment.s3_region</code></td>
-<td style="text-align: left;">AWS Region where bucket is hosted</td>
+<td style="text-align: left;">AWS Region where the bucket is hosted</td>
 <td style="text-align: left;">us-east-1</td>
 </tr>
 </tbody>
@@ -179,7 +183,7 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="at">  </span><span class="fu">syslog.key</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">{ .Files.Get </span><span class="st">&quot;certs/syslog.key.b64&quot;</span><span class="at"> </span><span class="kw">}</span><span class="at">}</span></span></code></pre></div>
 <p>Save the secret file e.g. <code>logiq-certs.yaml</code>. Proceed to install the secret in the same namespace where you want to deploy LOGIQ</p>
 <p>The secret can now be passed into the LOGIQ deployment</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq --set global.domain=logiq.my-domain.com <span class="kw">\</span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq --set global.domain=logiq.my-domain.com <span class="kw">\</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="ex">--set</span> logiq-flash.secrets_name=logiq-certs <span class="kw">\</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq</span></code></pre></div>
 <table>
@@ -244,12 +248,12 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>$ <span class="ex">helm</span> upgrade --namespace logiq <span class="kw">\</span></span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="ex">helm</span> upgrade --namespace logiq <span class="kw">\</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> <span class="kw">\</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="ex">logiq</span> logiq-repo/logiq</span></code></pre></div>
 <h3 id="using-external-aws-rds-postgres-database-instance">3.5 Using external AWS RDS Postgres database instance</h3>
 <p>To use external AWS RDS Postgres database for your LOGIQ deployment, execute the following command.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="ex">--set</span> global.chart.postgres=false <span class="kw">\</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="ex">--set</span> global.environment.postgres_host=<span class="op">&lt;</span>postgres-host-ip/dns<span class="op">&gt;</span> <span class="kw">\</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="ex">--set</span> global.environment.postgres_user=<span class="op">&lt;</span>username<span class="op">&gt;</span> <span class="kw">\</span></span>
@@ -297,7 +301,8 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </tbody>
 </table>
 <blockquote>
-<p>While configuring RDS, create a new parameter group that sets autoVaccum to true or the value “1”, associate this parameter group to your RDS instance. Autovacuum is a daemon that automates the execution of VACUUM and ANALYZE (to gather statistics) commands. Autovacuum checks for bloated tables in the database and reclaims the space for reuse.</p>
+<p>While configuring RDS, create a new parameter group that sets autoVaccum to true or the value “1”, associate this parameter group to your RDS instance.</p>
+<p>Auto vacuum automates the execution of <code>VACUUM</code> and <code>ANALYZE</code> (to gather statistics) commands. Auto vacuum checks for bloated tables in the database and reclaims the space for reuse.</p>
 </blockquote>
 <h3 id="upload-logiq-professional-license">3.6 Upload LOGIQ professional license</h3>
 <p>The deployment described above offers 30 days trial license. Email <code>license@logiq.ai</code> to obtain a professional license. After obtaining the license, use the logiqctl tool to apply the license to the deployment. Please refer <code>logiqctl</code> details at <a href="https://logiqctl.logiq.ai/">https://logiqctl.logiq.ai/</a>. You will need API-token from LOGIQ UI as shown below</p>
@@ -316,7 +321,7 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a><span class="ex">View</span> License information</span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a> <span class="ex">-</span> logiqctl license get</span></code></pre></div>
 <h3 id="customize-admin-account">3.7 Customize Admin account</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="ex">--set</span> global.environment.admin_name=<span class="st">&quot;LOGIQ Administrator&quot;</span> <span class="kw">\</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="ex">--set</span> global.environment.admin_password=<span class="st">&quot;admin_password&quot;</span> <span class="kw">\</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="ex">--set</span> global.environment.admin_email=<span class="st">&quot;admin@example.com&quot;</span> <span class="kw">\</span></span>
@@ -354,7 +359,10 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </table>
 <h3 id="using-external-redis-instance">3.8 Using external Redis instance</h3>
 <p>To use external Redis for your LOGIQ deployment, execute the following command.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<blockquote>
+<p>NOTE: At this time LOGIQ only supports connecting to a Redis cluster in a local VPC without authentication</p>
+</blockquote>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="ex">--set</span> global.chart.redis=false <span class="kw">\</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="ex">--set</span> global.environment.redis_host=<span class="op">&lt;</span>redis-host-ip/dns<span class="op">&gt;</span> <span class="kw">\</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq</span></code></pre></div>
@@ -390,12 +398,33 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </tbody>
 </table>
 <h3 id="configuring-cluster-id">3.9 Configuring cluster id</h3>
-<p>When deploying LOGIQ configure the cluster id to monitor the LOGIQ deployment. For details about the <code>cluster_id</code> refer to section <a href="agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance">Managing multiple K8S clusters</a></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>$ <span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
+<p>When deploying LOGIQ, configure the cluster id to monitor your own LOGIQ deployment. For details about the <code>cluster_id</code> refer to section <a href="agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance">Managing multiple K8S clusters</a></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="ex">helm</span> install logiq --namespace logiq <span class="kw">\</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="ex">--set</span> global.environment.cluster_id=<span class="op">&lt;</span>cluster id<span class="op">&gt;</span> <span class="kw">\</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq</span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">HELM Option</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">global.environment.cluster_id</td>
+<td style="text-align: left;">Cluster Id being used for the K8S cluster running LOGIQ. See Section on <a href="agentless.md#managing-multiple-k-8-s-clusters-in-a-single-logiq-instance">Managing multiple K8S</a> clusters for more details.</td>
+<td style="text-align: left;">LOGIQ</td>
+</tr>
+</tbody>
+</table>
 <h3 id="sizing-your-logiq-cluster">3.10 Sizing your LOGIQ cluster</h3>
-<p>When deploying LOGIQ, size your infrastructure to provide appropriate vcpu and memory requirements. We recommened the following size for small. medium and large cluster specification from <a href="k8s-quickstart-guide.md#1-3-prepare-your-values-YAML-file">Section 1.3</a> values yaml files.</p>
+<p>When deploying LOGIQ, size your infrastructure to provide appropriate vcpu and memory requirements. We recommened the following minimum size for small. medium and large cluster specification from <a href="k8s-quickstart-guide.md#1-3-prepare-your-values-YAML-file">Section 1.3</a> values yaml files.</p>
 <table>
 <thead>
 <tr class="header">
@@ -428,7 +457,7 @@ Besides the web based UI, LOGIQ also offers <a href="https://docs.logiq.ai/logiq
 </table>
 <h2 id="teardown">4 Teardown</h2>
 <p>If and when you want to decommission the installation using the following commands</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>$ <span class="ex">helm</span> delete logiq --namespace logiq</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>$ <span class="ex">helm</span> repo remove logiq-repo</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>$ <span class="ex">kubectl</span> delete namespace logiq</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="ex">helm</span> delete logiq --namespace logiq</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="ex">helm</span> repo remove logiq-repo</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="ex">kubectl</span> delete namespace logiq</span></code></pre></div>
 <p>If you followed installation steps in section 3.1 - Using an AWS S3 bucket, you may want to delete the s3 bucket that was specified at deployment time.</p>
