@@ -3,7 +3,7 @@ entries:
   logiq:
   - apiVersion: v2
     appVersion: 2.1.0
-    created: "2020-10-02T11:15:45.393217-07:00"
+    created: "2020-10-02T11:46:45.188346-07:00"
     dependencies:
     - alias: postgres
       condition: global.chart.postgres
@@ -25,7 +25,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 0.16.3
     description: LOGIQ Observability HELM chart for Kubernetes
-    digest: b598a88a0a7e21d4d096e2538fe18026458592e09bf26a4ecdf017c6bacee656
+    digest: 08b600251f190b7518e9e9a5f3391ea04c8d0ca4eff0666d80e7e38e22e46697
     home: https://logiq.ai
     icon: https://logiq.ai/wp-content/uploads/2019/11/cropped-clipboard-image.png
     maintainers:
@@ -40,4 +40,4 @@ entries:
     urls:
     - logiq-2.2.1.tgz
     version: 2.2.1
-generated: "2020-10-02T11:15:45.368197-07:00"
+generated: "2020-10-02T11:46:45.159909-07:00"
