@@ -25,8 +25,8 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 
 ```bash
 $ helm search repo logiq-repo
-NAME                CHART VERSION    APP VERSION    DESCRIPTION
-logiq-repo/logiq    2.2.6            2.1.4          LOGIQ Observability HELM chart for Kubernetes
+NAME                CHART VERSION    APP VERSION      DESCRIPTION
+logiq-repo/logiq    2.2.7            2.1.9            LOGIQ Observability HELM chart for Kubernetes
 ```
 
 ### 1.2 Create namespace where LOGIQ will be deployed
@@ -130,7 +130,6 @@ Create a bucket in AWS s3 with a unique bucket name in the region where you plan
 
 ```bash
 helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
---set s3-gateway.s3gateway.enabled=true \
 --set global.environment.s3_bucket=<bucket_name> \
 --set global.environment.awsServiceEndpoint=https://s3.<region>.amazonaws.com \
 --set global.environment.AWS_ACCESS_KEY_ID=<access_key> \
@@ -140,7 +139,6 @@ helm install logiq --namespace logiq --set global.domain=logiq.my-domain.com \
 
 | HELM Option | Description | Defaults |
 | :--- | :--- | :--- |
-| `s3-gateway.s3gateway.enabled` | This helm option switches LOGIQ's built-in s3 layer to a caching gateway. This is required if your S3 bucket is hosted in an external cloud provider like AWS, GCP, Azure etc. | false |
 | `global.environment.s3_bucket` | Name of the S3 bucket in AWS | logiq |
 | `global.environment.awsServiceEndpoint` | S3 Service endpoint : [https://s3.\*\*&lt;region&gt;\*\*.amazonaws.com](https://s3.**<region>**.amazonaws.com) | [https://s3.us-east-1.amazonaws.com](https://s3.us-east-1.amazonaws.com) |
 | `global.environment.AWS_ACCESS_KEY_ID` | AWS Access key for accessing the bucket | No default |
@@ -332,6 +330,34 @@ helm install logiq -n logiq -f values.yaml \
 --set kubernetes-ingress.controller.service.type=NodePort \
 logiq-repo/logiq
 ```
+
+### 3.12 Using Node Selectors
+
+The LOGIQ stack deployment can be optimized using node labels and node selectors to place various components of the stack optimally
+
+```bash
+logiq.ai/node=ingest
+```
+
+The node label `logiq.ai/node` above can be used to control the placement of ingest pods for log data into ingest optimized nodes. This allows for managing cost and instance sizing effectively.
+
+The various nodeSelectors are defined in the globals section of the values.yaml file
+
+```bash
+globals:
+  nodeSelectors:
+    enabled: true
+    ingest: ingest
+    infra: common
+    other: common
+    db: common
+    cache: common
+    ingest_sync: common
+```
+
+In the example above, there are two node selectors in use - `ingest` and `common`. 
+
+> Node selectors are enabled by setting `enabled` to `true` for `globals.nodeSelectors`
 
 ## 4 Teardown
 
