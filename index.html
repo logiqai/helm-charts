@@ -7,7 +7,7 @@
     <title>Logiq Helm</title>
 </head>
 <body>
-    <div class="markdown-body">
+<div class="markdown-body">
 <h1 id="k8s-quickstart-guide">K8S Quickstart guide</h1>
 <h2 id="prerequisites">1 - Prerequisites</h2>
 <p>LOGIQ K8S components are made available as helm charts. Instructions below assume you are using HELM 3. Please read and agree to the <a href="https://docs.logiq.ai/eula/eula">EULA</a> before proceeding.</p>
@@ -20,7 +20,7 @@
 <p>You can now run <code>helm search repo logiq-repo</code> to see the available helm charts</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>$ <span class="ex">helm</span> search repo logiq-repo</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="ex">NAME</span>                CHART VERSION    APP VERSION      DESCRIPTION</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">logiq-repo/logiq</span>    2.2.10           2.1.11           LOGIQ Observability HELM chart for Kubernetes</span></code></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="ex">logiq-repo/logiq</span>    2.2.11           2.1.11           LOGIQ Observability HELM chart for Kubernetes</span></code></pre></div>
 <h3 id="create-namespace-where-logiq-will-be-deployed">1.2 Create namespace where LOGIQ will be deployed</h3>
 <blockquote>
 <p>NOTE: Namespace name cannot be more than 15 characters in length</p>
@@ -495,13 +495,19 @@ Create a bucket in AWS s3 with a unique bucket name in the region where you plan
 <blockquote>
 <p>Node selectors are enabled by setting <code>enabled</code> to <code>true</code> for <code>globals.nodeSelectors</code></p>
 </blockquote>
+<h3 id="installing-grafana">3.13 Installing Grafana</h3>
+<p>The LOGIQ stack includes Grafana as part of the deployment as an optional component. To enable Grafana in your cluster, follow the steps below</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="ex">helm</span> upgrade --install logiq --namespace logiq <span class="kw">\</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a><span class="ex">--set</span> global.chart.grafana=true <span class="dt">\ </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a><span class="ex">--set</span> global.persistence.storageClass=<span class="op">&lt;</span>storage class name<span class="op">&gt;</span> logiq-repo/logiq</span></code></pre></div>
+<p>The Grafana instance is exposed at port 3000 on the ingress controller.</p>
 <h2 id="teardown">4 Teardown</h2>
 <p>If and when you want to decommission the installation using the following commands</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="ex">helm</span> delete logiq --namespace logiq</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a><span class="ex">helm</span> repo remove logiq-repo</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a><span class="ex">kubectl</span> delete namespace logiq</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="ex">helm</span> delete logiq --namespace logiq</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="ex">helm</span> repo remove logiq-repo</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a><span class="ex">kubectl</span> delete namespace logiq</span></code></pre></div>
 <p>If you followed installation steps in section 3.1 - Using an AWS S3 bucket, you may want to delete the s3 bucket that was specified at deployment time.</p>
-    </div>
+</div>
 
 </body>
 </html>

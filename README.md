@@ -26,7 +26,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME                CHART VERSION    APP VERSION      DESCRIPTION
-logiq-repo/logiq    2.2.10           2.1.11           LOGIQ Observability HELM chart for Kubernetes
+logiq-repo/logiq    2.2.11           2.1.11           LOGIQ Observability HELM chart for Kubernetes
 ```
 
 ### 1.2 Create namespace where LOGIQ will be deployed
@@ -358,6 +358,18 @@ globals:
 In the example above, there are two node selectors in use - `ingest` and `common`. 
 
 > Node selectors are enabled by setting `enabled` to `true` for `globals.nodeSelectors`
+
+### 3.13 Installing Grafana
+
+The LOGIQ stack includes Grafana as part of the deployment as an optional component. To enable Grafana in your cluster, follow the steps below
+
+```bash
+helm upgrade --install logiq --namespace logiq \
+--set global.chart.grafana=true \ 
+--set global.persistence.storageClass=<storage class name> logiq-repo/logiq
+```
+
+The Grafana instance is exposed at port 3000 on the ingress controller.
 
 ## 4 Teardown
 
