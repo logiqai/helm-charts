@@ -47,6 +47,6 @@ entries:
     name: logiq
     type: application
     urls:
-    - https://github.com/logiqai/helm-charts.git/logiq-2.3.0.tgz
+    - logiq-2.3.0.tgz
     version: 2.3.0
 generated: "2021-07-24T16:32:00.196192058+05:30"
