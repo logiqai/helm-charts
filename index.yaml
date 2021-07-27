@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   logiq:
   - apiVersion: v2
-    appVersion: 2.3.0
+    appVersion: 2.1.11.37
     created: "2021-07-24T16:32:00.228984513+05:30"
     dependencies:
     - alias: postgres
