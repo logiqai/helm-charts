@@ -1,8 +1,9 @@
 apiVersion: v1
+apiVersion: v1
 entries:
   logiq:
   - apiVersion: v2
-    appVersion: 2.1.11.37
+    appVersion: 2.1.12
     created: "2021-07-24T16:32:00.228984513+05:30"
     dependencies:
     - alias: postgres
@@ -44,9 +45,11 @@ entries:
       name: ranjan
     - email: tito@logiq.ai
       name: tito
+    - email: sandesh@logiq.ai
+      name: sandesh
     name: logiq
     type: application
     urls:
-    - logiq-2.3.0.tgz
-    version: 2.3.0
-generated: "2021-07-24T16:32:00.196192058+05:30"
+    - logiq-2.3.2.tgz
+    version: 2.3.2
+generated: "2021-10-18T12:23:23.149907935+05:30"
