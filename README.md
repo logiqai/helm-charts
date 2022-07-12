@@ -66,7 +66,8 @@ This will install LOGIQ and expose the LOGIQ services and UI on the ingress IP. 
 
 > The default login and password to use is `flash-admin@foo.com` and `flash-password`. You can change these in the UI once logged in. Helm chart can override the default admin settings as well. See section[ 3.7](k8s-quickstart-guide.md#3-7-customize-admin-account) on customizing the admin settings
 
-![Logiq Insights Login UI ](https://github.com/logiqai/docs/raw/master/.gitbook/assets/screen-shot-2020-03-24-at-3.42.55-pm.png)
+<img width="1786" alt="landing" src="https://user-images.githubusercontent.com/67860971/178478406-f183ecbf-678a-482a-8d4c-3edd45e7b405.png">
+
 
 LOGIQ server provides Ingest, log tailing, data indexing, query and search capabilities.  
 Besides the web based UI, LOGIQ also offers [logiqctl, LOGIQ CLI](https://docs.logiq.ai/logiq-cli) for accessing the above features.
