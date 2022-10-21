@@ -52,6 +52,6 @@ entries:
     name: logiq
     type: application
     urls:
-    - logiq-v3.0.4.tgz/logiq-v3.0.4.tgz
+    - logiq-v3.0.4.tgz
     version: v3.0.4
 generated: "2022-09-20T13:23:54.573964742+05:30"
