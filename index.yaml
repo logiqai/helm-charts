@@ -50,6 +50,6 @@ entries:
     name: logiq
     type: application
     urls:
-    - logiq-v3.0.6.tgz/logiq-v3.0.6.tgz
+    - logiq-v3.0.6.tgz
     version: v3.0.6
 generated: "2022-11-15T16:30:48.056013407+05:30"
