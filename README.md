@@ -26,7 +26,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME                CHART VERSION    APP VERSION                  DESCRIPTION
-logiq-repo/logiq      v3.0.8          v3.5.8.7c      LOGIQ.AI Observability Data Fabric for Kubernetes
+logiq-repo/logiq      v3.0.9          v3.5.9.1      LOGIQ.AI Observability Data Fabric for Kubernetes
 ```
 
 ### 1.2 Create namespace where LOGIQ.AI will be deployed
