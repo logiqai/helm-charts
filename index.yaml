@@ -1,0 +1,63 @@
+apiVersion: v1
+entries:
+  apica-ascent:
+  - apiVersion: v2
+    appVersion: v3.7
+    created: "2024-02-23T12:05:26.605347485+05:30"
+    dependencies:
+    - alias: postgres
+      condition: global.chart.postgres
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.7.3
+    - alias: redis
+      condition: global.chart.redis
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.6.5
+    - alias: s3gateway
+      condition: global.chart.s3gateway
+      name: minio
+      repository: https://kubernetes-charts.storage.googleapis.com
+      version: 5.0.20
+    - alias: prometheus
+      condition: global.chart.prometheus
+      name: kube-prometheus
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.5.3
+    - alias: grafana
+      condition: global.chart.grafana
+      name: grafana
+      repository: https://charts.bitnami.com/bitnami
+      version: 4.2.4
+    - alias: common
+      condition: global.chart.grafana
+      name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.1.1
+    - alias: thanos
+      condition: global.chart.thanos
+      name: thanos
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.2.5
+    description: Apica Ascent Data Fabric HELM chart for Kubernetes
+    digest: 6f64fb3af032f94896ec80974e4eaf6628088af6d5904c624f456bd619bc55f2
+    home: https://apica.io
+    icon: https://www.apica.io/wp-content/uploads/2023/01/apica-logo-white-2022.png
+    maintainers:
+    - email: veeresh.kori@apica.io
+      name: veeresh
+    - email: ranjan.parthasarathy@apica.io
+      name: ranjan
+    - email: kumar.vishnu@apica.io
+      name: kumarvishnu
+    - email: lokesh.sm@apica.io
+      name: lokesh
+    - email: mr.amoghkrishnan@apica.io
+      name: amogh
+    name: apica-ascent
+    type: application
+    urls:
+    - apica-ascent-2.0.0.tgz
+    version: 2.0.0
+generated: "2024-02-23T12:05:26.580449967+05:30"
