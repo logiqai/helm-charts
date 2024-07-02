@@ -8,7 +8,7 @@ description: >-
 
 ## 1 - Prerequisites
 
-Apica Ascent K8S components are made available as helm charts. Instructions below assume you are using HELM 3. Please read and agree to the [EULA](https://docs.logiq.ai/eula/eula) before proceeding.
+Apica Ascent K8S components are made available as helm charts. Instructions below assume you are using HELM 3. Please read and agree to the [EULA](https://docs.apica.io/eula/eula) before proceeding.
 
 ### 1.1 Add Apica Ascent helm repository
 
@@ -26,7 +26,7 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 ```bash
 $ helm search repo logiq-repo
 NAME                CHART VERSION    APP VERSION                  DESCRIPTION
-logiq-repo/logiq      v2.0.1          v3.7.1      Apica Ascent Observability Data Fabric for Kubernetes
+logiq-repo/logiq      v2.0.2          v3.9.0      Apica Ascent Observability Data Fabric for Kubernetes
 ```
 
 ### 1.2 Create namespace where Apica Ascent will be deployed
