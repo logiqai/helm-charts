@@ -25,9 +25,10 @@ You can now run `helm search repo logiq-repo` to see the available helm charts
 
 ```bash
 $ helm search repo logiq-repo
-NAME                CHART VERSION    APP VERSION                  DESCRIPTION
-logiq-repo/logiq      v2.0.2          v3.9.0      Apica Ascent Observability Data Fabric for Kubernetes
 ```
+| NAME              | CHART VERSION | APP VERSION | DESCRIPTION                                           |
+|-------------------|---------------|-------------|-------------------------------------------------------|
+| logiq-repo/logiq  | v2.0.2        | v3.9.0      | Apica Ascent Observability Data Fabric for Kubernetes |
 
 ### 1.2 Create namespace where Apica Ascent will be deployed
 
